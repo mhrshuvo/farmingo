@@ -1,19 +1,20 @@
 "use client";
 
-// NavbarWithSearch.js
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
+import { CiShoppingCart } from "react-icons/ci";
 import Container from "@/app/container";
 import LocationModal from "../modals/location-modal";
+import LoginModal from "../modals/login-modal";
+import CartSidebar from "../sidebar/cart-sidebar";
 import { Button, Badge } from "@nextui-org/react";
-import { CiShoppingCart } from "react-icons/ci";
-import LoginModal from "../modals/login-modal"; // Import LoginModal component
 
 export default function NavbarWithSearch() {
   const [selectedZone, setSelectedZone] = useState(null);
   const [isFirstVisit, setIsFirstVisit] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
 
   useEffect(() => {
     const savedZone = localStorage.getItem("selectedZone");
@@ -23,7 +24,7 @@ export default function NavbarWithSearch() {
     } else {
       setSelectedZone(savedZone);
     }
-  }, []);
+  }, []); // Run only once on initial render
 
   const handleZoneSelection = (zone) => {
     setSelectedZone(zone);
@@ -43,6 +44,10 @@ export default function NavbarWithSearch() {
     setIsLoginModalOpen(false);
   };
 
+  const toggleCartSidebar = () => {
+    setIsCartSidebarOpen(!isCartSidebarOpen);
+  };
+
   return (
     <nav className="bg-green-600">
       <Container>
@@ -51,14 +56,14 @@ export default function NavbarWithSearch() {
             <div className="font-bold text-white">LOGO</div>
             <div className="relative ">
               <input
-                className="w-[300px] md:w-[600px] lg:w-[800px]  h-10 px-3 pr-10 rounded-md focus:outline-none"
+                className="w-full md:w-[300px] lg:w-[600px] xl:w-[800px] h-10 px-3 pr-10 rounded-md focus:outline-none"
                 type="search"
                 placeholder="Search your fresh vegetables..."
               />
               <FaSearch className="absolute right-3 top-2/4 transform -translate-y-2/4 text-gray-400" />
             </div>
           </div>
-          <div className="flex mt-5 md:mt-0 lg:mt-0 mx-14 md:mx-0 lg:mx-0 space-x-4 items-center">
+          <div className="flex mt-5 md:mt-0 lg:mt-0 space-x-4 items-center">
             <div
               onClick={() => setIsLocationModalOpen(true)}
               className="flex items-center gap-2 cursor-pointer font-bold"
@@ -82,7 +87,7 @@ export default function NavbarWithSearch() {
                 </Button>
               </div>
 
-              <div className="cursor-pointer">
+              <div className="cursor-pointer" onClick={toggleCartSidebar}>
                 <Badge content="5" color="warning">
                   <CiShoppingCart className="text-white" size={30} />
                 </Badge>
@@ -97,6 +102,7 @@ export default function NavbarWithSearch() {
         onClose={closeLocationModal}
         onZoneSelect={handleZoneSelection}
       />
+      <CartSidebar isOpen={isCartSidebarOpen} toggle={toggleCartSidebar} />
     </nav>
   );
 }
