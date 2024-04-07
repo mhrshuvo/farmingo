@@ -88,7 +88,7 @@ export default function NavbarWithSearch() {
               </div>
 
               <div className="cursor-pointer" onClick={toggleCartSidebar}>
-                <Badge content="5" color="warning">
+                <Badge content="0" color="warning">
                   <CiShoppingCart className="text-white" size={30} />
                 </Badge>
               </div>

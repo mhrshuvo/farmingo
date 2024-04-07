@@ -22,18 +22,8 @@ export default function LoginModal({ isOpen, onClose }) {
           <>
             <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
             <ModalBody>
-              <Input
-                autoFocus
-                label="Phone"
-                placeholder="Enter your Phone"
-                variant="bordered"
-              />
-              <Input
-                label="Password"
-                placeholder="Enter your password"
-                type="password"
-                variant="bordered"
-              />
+              <Input autoFocus label="Phone" variant="bordered" />
+              <Input label="Password" type="password" variant="bordered" />
               <div className="flex py-2 px-1 justify-between">
                 <Checkbox
                   classNames={{
