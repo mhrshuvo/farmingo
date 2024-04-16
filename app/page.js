@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <main>
       <Container>
-        <div className="my-20  grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="my-20  grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

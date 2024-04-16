@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import NavbarWithSearch from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
+import CategoriesNavbar from "@/components/categories/categories";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <NavbarWithSearch></NavbarWithSearch>
+          <div className="sticky top-0 z-10">
+            <NavbarWithSearch></NavbarWithSearch>
+            <CategoriesNavbar></CategoriesNavbar>
+          </div>
           {children}
           <Footer />
         </Providers>

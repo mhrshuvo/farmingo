@@ -5,7 +5,7 @@ const ProductCard = ({ product }) => {
   const { name, price, image, unit } = product;
 
   return (
-    <div className="w-[170px] h-[330px] md:w-[260px] md:h-[400px] mx-auto bg-white border flex flex-col justify-between">
+    <div className="w-[220px] h-[330px] mx-auto bg-white border rounded-md flex flex-col justify-between">
       <img
         className="w-full mx-auto my-2 h-[50%] object-cover"
         src={image}

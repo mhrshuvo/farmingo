@@ -49,7 +49,7 @@ export default function NavbarWithSearch() {
   };
 
   return (
-    <nav className="bg-[#152721]">
+    <nav className="bg-[#152721] ">
       <Container>
         <div className="md:flex lg:flex justify-between items-center px-4 py-4">
           <div className="flex items-center md:gap-10 lg:gap-10 gap-2">
