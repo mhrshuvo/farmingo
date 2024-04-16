@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "name": "Apple",
+    "price": 99.99,
+    "image": "/images/1.webp",
+    "unit": "  KG"
+  },
+  {
+    "id": 2,
+    "name": "Banana",
+    "price": 49.99,
+    "image": "/images/2.webp",
+    "unit": "  Dozen"
+  },
+  {
+    "id": 3,
+    "name": "Dragon Fruit",
+    "price": 29.99,
+    "image": "/images/3.webp",
+    "unit": "  Piece"
+  },
+  {
+    "id": 4,
+    "name": "Mango",
+    "price": 79.99,
+    "image": "/images/4.webp",
+    "unit": " KG"
+  },
+  {
+    "id": 5,
+    "name": "Tender Coconut",
+    "price": 129.99,
+    "image": "/images/5.webp",
+    "unit": " Piece"
+  },
+  {
+    "id": 6,
+    "name": "Fried Chips",
+    "price": 39.99,
+    "image": "/images/6.webp",
+    "unit": "   Packet"
+  },
+  {
+    "id": 7,
+    "name": "Cholai Laddu",
+    "price": 89.99,
+    "image": "/images/7.webp",
+    "unit": "  KG"
+  },
+  {
+    "id": 8,
+    "name": "Akarshit Alu Chips",
+    "price": 59.99,
+    "image": "/images/8.webp",
+    "unit": "   Packet"
+  },
+  {
+    "id": 9,
+    "name": "Farmers Paneer",
+    "price": 109.99,
+    "image": "/images/9.webp",
+    "unit": "  KG"
+  },
+  {
+    "id": 10,
+    "name": "Beetroot",
+    "price": 69.99,
+    "image": "/images/10.webp",
+    "unit": "  KG"
+  },
+  {
+    "id": 11,
+    "name": "Ashirbaad Atta",
+    "price": 149.99,
+    "image": "/images/11.webp",
+    "unit": "  KG"
+  },
+  {
+    "id": 12,
+    "name": "Rajdhani Atta",
+    "price": 79.99,
+    "image": "/images/12.webp",
+    "unit": "  KG"
+  },
+  {
+    "id": 13,
+    "name": "Chakki Atta",
+    "price": 39.99,
+    "image": "/images/13.webp",
+    "unit": "  KG"
+  },
+  {
+    "id": 14,
+    "name": "Ashirbaad Atta 2",
+    "price": 99.99,
+    "image": "/images/14.webp",
+    "unit": "  KG"
+  },
+  {
+    "id": 15,
+    "name": "Idly Dosa",
+    "price": 199.99,
+    "image": "/images/15.webp",
+    "unit": "   Packet"
+  },
+  {
+    "id": 16,
+    "name": "Aassai Dosa",
+    "price": 59.99,
+    "image": "/images/16.webp",
+    "unit": "   Packet"
+  },
+  {
+    "id": 17,
+    "name": "Ammas Idly Dosa",
+    "price": 109.99,
+    "image": "/images/17.webp",
+    "unit": "   Packet"
+  },
+  {
+    "id": 18,
+    "name": "Best Dosa",
+    "price": 129.99,
+    "image": "/images/18.webp",
+    "unit": "   Packet"
+  },
+  {
+    "id": 19,
+    "name": "Ragi Idly n Dosa",
+    "price": 69.99,
+    "image": "/images/19.webp",
+    "unit": "   Packet"
+  },
+  {
+    "id": 20,
+    "name": "Aassai Milagai Podi",
+    "price": 89.99,
+    "image": "/images/20.webp",
+    "unit": "   Packet"
+  }
+]
