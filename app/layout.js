@@ -5,6 +5,7 @@ import NavbarWithSearch from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
 import CategoriesNavbar from "@/components/categories/categories";
 import { CartProvider } from "@/contexts/cart/cart-context";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
               <CategoriesNavbar></CategoriesNavbar>
             </div>
             {children}
+            <Toaster />
             <Footer />
           </Providers>
         </CartProvider>

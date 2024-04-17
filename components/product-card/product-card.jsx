@@ -1,6 +1,7 @@
 import { useCart } from "@/contexts/cart/cart-context";
 import { Button } from "@nextui-org/react";
 import React from "react";
+import toast from "react-hot-toast";
 
 const ProductCard = ({ product }) => {
   const { name, price, image, unit } = product;
@@ -8,10 +9,11 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = () => {
     addItemToCart(product);
+    toast.success("Successfully Added");
   };
 
   return (
-    <div className="w-[220px] h-[330px] mx-auto bg-white border rounded-md flex flex-col justify-between">
+    <div className="w-[180px] md:w-[220px] h-[330px] mx-auto bg-white border rounded-md flex flex-col justify-between">
       <img
         className="w-full mx-auto my-2 h-[50%] object-cover"
         src={image}

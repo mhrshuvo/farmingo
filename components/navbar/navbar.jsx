@@ -12,7 +12,6 @@ import { useCart } from "@/contexts/cart/cart-context";
 
 export default function NavbarWithSearch() {
   const [selectedZone, setSelectedZone] = useState(null);
-  const [isFirstVisit, setIsFirstVisit] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
@@ -20,13 +19,10 @@ export default function NavbarWithSearch() {
 
   useEffect(() => {
     const savedZone = localStorage.getItem("selectedZone");
-    if (!savedZone) {
-      setIsFirstVisit(true);
-      setIsLocationModalOpen(true);
-    } else {
+    if (savedZone) {
       setSelectedZone(savedZone);
     }
-  }, []); // Run only once on initial render
+  }, []); // Run once on mount
 
   const handleZoneSelection = (zone) => {
     setSelectedZone(zone);
@@ -56,7 +52,7 @@ export default function NavbarWithSearch() {
         <div className="md:flex lg:flex justify-between items-center px-4 py-4">
           <div className="flex items-center md:gap-10 lg:gap-10 gap-2">
             <div className="font-bold text-white">LOGO</div>
-            <div className="relative ">
+            <div className="relative">
               <input
                 className="w-full md:w-[300px] lg:w-[600px] xl:w-[800px] h-10 px-3 pr-10 rounded-md focus:outline-none"
                 type="search"
@@ -72,7 +68,7 @@ export default function NavbarWithSearch() {
             >
               <FaMapMarkerAlt className="text-white cursor-pointer" />
               {selectedZone && (
-                <div className="text-white mr-2">{`${selectedZone}`}</div>
+                <div className="text-white mr-2">{selectedZone}</div>
               )}
             </div>
 

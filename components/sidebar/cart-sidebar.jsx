@@ -3,6 +3,7 @@ import { RiCloseLine } from "react-icons/ri";
 import { IoMdRemove, IoMdAdd } from "react-icons/io";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useCart } from "@/contexts/cart/cart-context";
+import toast from "react-hot-toast";
 
 const CartSidebar = ({ isOpen, toggle }) => {
   const sidebarRef = useRef(null);
@@ -49,19 +50,19 @@ const CartSidebar = ({ isOpen, toggle }) => {
 
   const handleDeleteItem = (item) => {
     removeItemFromCart(item);
+    toast.error("Removed From Cart");
   };
 
   return (
     <div
       ref={sidebarRef}
-      className={`fixed inset-y-0 right-0 z-50 w-full md:w-80 bg-white shadow-lg overflow-y-auto transition-transform duration-300 ease-in-out transform ${
+      className={`fixed inset-y-0 right-0 z-50 w-full md:w-80 bg-gray-300 shadow-lg overflow-y-auto transition-transform duration-300 ease-in-out transform ${
         isOpen ? "translate-x-0" : "translate-x-full"
       } ${isAnimating ? "opacity-0" : "opacity-100"}`}
       onAnimationStart={() => setIsAnimating(true)}
       onAnimationEnd={() => setIsAnimating(false)}
     >
       <div className="flex justify-between items-center px-4 py-2 border-b border-gray-200">
-        <h2 className="text-lg font-semibold">Cart</h2>
         <button className="text-gray-600 focus:outline-none" onClick={toggle}>
           <RiCloseLine />
         </button>
@@ -118,7 +119,7 @@ const CartSidebar = ({ isOpen, toggle }) => {
             className="bg-red-500 text-white px-4 py-2 rounded-md mt-4"
             onClick={clearCart}
           >
-            Clear Cart
+            Remove All
           </button>
         )}
       </div>
