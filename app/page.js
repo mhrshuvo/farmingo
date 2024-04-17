@@ -6,6 +6,7 @@ import Container from "./container";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
+  
 
   useEffect(() => {
     const fetchProducts = async () => {

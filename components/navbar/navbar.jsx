@@ -8,6 +8,7 @@ import LocationModal from "../modals/location-modal";
 import LoginModal from "../modals/login-modal";
 import CartSidebar from "../sidebar/cart-sidebar";
 import { Button, Badge } from "@nextui-org/react";
+import { useCart } from "@/contexts/cart/cart-context";
 
 export default function NavbarWithSearch() {
   const [selectedZone, setSelectedZone] = useState(null);
@@ -15,6 +16,7 @@ export default function NavbarWithSearch() {
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
+  const { cart } = useCart();
 
   useEffect(() => {
     const savedZone = localStorage.getItem("selectedZone");
@@ -49,7 +51,7 @@ export default function NavbarWithSearch() {
   };
 
   return (
-    <nav className="bg-[#152721] ">
+    <nav className="bg-[#152721]">
       <Container>
         <div className="md:flex lg:flex justify-between items-center px-4 py-4">
           <div className="flex items-center md:gap-10 lg:gap-10 gap-2">
@@ -88,7 +90,12 @@ export default function NavbarWithSearch() {
               </div>
 
               <div className="cursor-pointer" onClick={toggleCartSidebar}>
-                <Badge content="0" color="warning">
+                <Badge
+                  content={cart
+                    .reduce((total, item) => total + item.quantity, 0)
+                    .toString()}
+                  color="warning"
+                >
                   <CiShoppingCart className="text-white" size={30} />
                 </Badge>
               </div>
