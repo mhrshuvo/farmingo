@@ -4,6 +4,7 @@ import { IoMdRemove, IoMdAdd } from "react-icons/io";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useCart } from "@/contexts/cart/cart-context";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const CartSidebar = ({ isOpen, toggle }) => {
   const sidebarRef = useRef(null);
@@ -63,8 +64,8 @@ const CartSidebar = ({ isOpen, toggle }) => {
       onAnimationEnd={() => setIsAnimating(false)}
     >
       <div className="flex justify-between items-center px-4 py-2 border-b border-gray-200">
-        <button className="text-gray-600 focus:outline-none" onClick={toggle}>
-          <RiCloseLine />
+        <button className="text-red-600 focus:outline-none" onClick={toggle}>
+          <RiCloseLine size={25} />
         </button>
       </div>
       <div className="px-4 py-6">
@@ -72,55 +73,55 @@ const CartSidebar = ({ isOpen, toggle }) => {
         {cart.length === 0 ? (
           <p className="text-gray-800">Your cart is empty.</p>
         ) : (
-          <ul>
-            {cart.map((item) => (
-              <li
-                key={item.id}
-                className="flex items-center justify-between mb-4"
-              >
-                <div className="flex items-center">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-12 h-12 mr-4 rounded-md"
-                  />
-                  <div>
-                    <p className="text-gray-800">{item.name}</p>
-                    <p className="text-gray-600">৳{item.price}</p>
+          <div>
+            <ul>
+              {cart.map((item) => (
+                <li
+                  key={item.id}
+                  className="flex items-center justify-between mb-4"
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-12 h-12 mr-4 rounded-md"
+                    />
+                    <div>
+                      <p className="text-gray-800">{item.name}</p>
+                      <p className="text-gray-600">৳{item.price}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center">
-                  <button
-                    className="text-gray-600 focus:outline-none"
-                    onClick={() => handleRemoveQuantity(item)}
-                  >
-                    <IoMdRemove className="w-6 h-6" />
-                  </button>
-                  <span className="mx-2">{item.quantity}</span>
-                  <button
-                    className="text-gray-600 focus:outline-none"
-                    onClick={() => handleAddQuantity(item)}
-                  >
-                    <IoMdAdd className="w-6 h-6" />
-                  </button>
-                  <button
-                    className="text-gray-600 focus:outline-none ml-4"
-                    onClick={() => handleDeleteItem(item)}
-                  >
-                    <AiOutlineDelete className="w-6 h-6" />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-        {cart.length > 0 && (
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded-md mt-4"
-            onClick={clearCart}
-          >
-            Remove All
-          </button>
+                  <div className="flex items-center">
+                    <button
+                      className="text-gray-600 focus:outline-none"
+                      onClick={() => handleRemoveQuantity(item)}
+                    >
+                      <IoMdRemove className="w-6 h-6" />
+                    </button>
+                    <span className="mx-2">{item.quantity}</span>
+                    <button
+                      className="text-gray-600 focus:outline-none"
+                      onClick={() => handleAddQuantity(item)}
+                    >
+                      <IoMdAdd className="w-6 h-6" />
+                    </button>
+                    <button
+                      className="text-gray-600 focus:outline-none ml-4"
+                      onClick={() => handleDeleteItem(item)}
+                    >
+                      <AiOutlineDelete className="w-6 h-6" />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <Link href={"/checkout"}>
+              <button className="bg-green-600 text-white px-4 py-2 rounded-md mt-4 w-full">
+                Checkout
+              </button>
+            </Link>
+          </div>
         )}
       </div>
     </div>
