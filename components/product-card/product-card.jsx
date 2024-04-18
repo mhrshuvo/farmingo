@@ -4,7 +4,7 @@ import React from "react";
 import toast from "react-hot-toast";
 
 const ProductCard = ({ product }) => {
-  const { name, price, image, unit } = product;
+  const { name, price, image, unit, type } = product;
   const { addItemToCart } = useCart();
 
   const handleAddToCart = () => {
@@ -21,15 +21,17 @@ const ProductCard = ({ product }) => {
       />
       <div className="px-4 py-2">
         <div className="font-semibold  mb-2 text-gray-800">{name}</div>
+        <div className="text-sm text-gray-600 mb-2">{type}</div>{" "}
+        {/* Display product type */}
         <div className="flex items-center">
-          <div className="font-bold text-lg text-[#145D4C]"> ৳ {price} </div>
-          <div className="ml-2 text-sm font-bold text-gray-600">{unit}</div>
+          <div className="font-bold text-lg text-[#145D4C]">৳ {price}</div>
+          <div className="ml-2 text-sm font-bold text-gray-600">/{unit}</div>
         </div>
       </div>
       <div className="px-4 pb-2">
         {/* Attach handleAddToCart function to the onClick event of the Button */}
         <Button
-          className=" bg-green-600 text-white"
+          className="bg-green-600 text-white"
           fullWidth
           onClick={handleAddToCart}
         >

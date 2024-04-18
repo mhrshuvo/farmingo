@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
+import Link from "next/link";
 
 const CategoriesNavbar = () => {
   const [showMoreOptions, setShowMoreOptions] = useState(false);
@@ -24,9 +25,15 @@ const CategoriesNavbar = () => {
     <div className="bg-gray-100 py-5">
       <Container>
         <ul className="flex flex-wrap justify-between font-semibold cursor-pointer mx-1">
-          <li className="mb-2 sm:mb-0">Vegetables</li>
-          <li className="mb-2 sm:mb-0">Fruits</li>
-          <li className="mb-2 sm:mb-0">Dairy</li>
+          <Link href={"/vegetables"} className="mb-2 sm:mb-0">
+            Vegetables
+          </Link>
+          <Link href={"/fruits"} className="mb-2 sm:mb-0">
+            Fruits
+          </Link>
+          <Link href={"/packaged-products"} className="mb-2 sm:mb-0">
+            Packaged Products
+          </Link>
           <li className="mb-2 sm:mb-0">Bakery</li>
           <li className="mb-2 sm:mb-0">Breakfast Items</li>
 

@@ -1,142 +1,260 @@
-[
-  {
-    "id": 1,
-    "name": "Apple",
-    "price": 99.99,
-    "image": "/images/1.webp",
-    "unit": "KG"
-  },
-  {
-    "id": 2,
-    "name": "Banana",
-    "price": 49.99,
-    "image": "/images/2.webp",
-    "unit": "Dozen"
-  },
-  {
-    "id": 3,
-    "name": "Dragon Fruit",
-    "price": 29.99,
-    "image": "/images/3.webp",
-    "unit": "Piece"
-  },
-  {
-    "id": 4,
-    "name": "Mango",
-    "price": 79.99,
-    "image": "/images/4.webp",
-    "unit": "KG"
-  },
-  {
-    "id": 5,
-    "name": "Tender Coconut",
-    "price": 129.99,
-    "image": "/images/5.webp",
-    "unit": "Piece"
-  },
-  {
-    "id": 6,
-    "name": "Fried Chips",
-    "price": 39.99,
-    "image": "/images/6.webp",
-    "unit": "Packet"
-  },
-  {
-    "id": 7,
-    "name": "Cholai Laddu",
-    "price": 89.99,
-    "image": "/images/7.webp",
-    "unit": "KG"
-  },
-  {
-    "id": 8,
-    "name": "Akarshit Alu Chips",
-    "price": 59.99,
-    "image": "/images/8.webp",
-    "unit": "Packet"
-  },
-  {
-    "id": 9,
-    "name": "Farmers Paneer",
-    "price": 109.99,
-    "image": "/images/9.webp",
-    "unit": "KG"
-  },
-  {
-    "id": 10,
-    "name": "Beetroot",
-    "price": 69.99,
-    "image": "/images/10.webp",
-    "unit": "KG"
-  },
-  {
-    "id": 11,
-    "name": "Ashirbaad Atta",
-    "price": 149.99,
-    "image": "/images/11.webp",
-    "unit": "KG"
-  },
-  {
-    "id": 12,
-    "name": "Rajdhani Atta",
-    "price": 79.99,
-    "image": "/images/12.webp",
-    "unit": "KG"
-  },
-  {
-    "id": 13,
-    "name": "Chakki Atta",
-    "price": 39.99,
-    "image": "/images/13.webp",
-    "unit": "KG"
-  },
-  {
-    "id": 14,
-    "name": "Ashirbaad Atta 2",
-    "price": 99.99,
-    "image": "/images/14.webp",
-    "unit": "KG"
-  },
-  {
-    "id": 15,
-    "name": "Idly Dosa",
-    "price": 199.99,
-    "image": "/images/15.webp",
-    "unit": "Packet"
-  },
-  {
-    "id": 16,
-    "name": "Aassai Dosa",
-    "price": 59.99,
-    "image": "/images/16.webp",
-    "unit": "Packet"
-  },
-  {
-    "id": 17,
-    "name": "Ammas Idly Dosa",
-    "price": 109.99,
-    "image": "/images/17.webp",
-    "unit": "Packet"
-  },
-  {
-    "id": 18,
-    "name": "Best Dosa",
-    "price": 129.99,
-    "image": "/images/18.webp",
-    "unit": "Packet"
-  },
-  {
-    "id": 19,
-    "name": "Ragi Idly n Dosa",
-    "price": 69.99,
-    "image": "/images/19.webp",
-    "unit": "Packet"
-  },
-  {
-    "id": 20,
-    "name": "Aassai Milagai Podi",
-    "price": 89.99,
-    "image": "/images/20.webp",
-    "unit": "Packet"
-  }
-]
+{
+  "Vegetables": [
+    {
+      "id": 1,
+      "name": "Product 1",
+      "price": 69.99,
+      "image": "/images/veg1.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "price": 39.99,
+      "image": "/images/veg2.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 3,
+      "name": "Product 3",
+      "price": 59.99,
+      "image": "/images/veg3.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 4,
+      "name": "Product 4",
+      "price": 49.99,
+      "image": "/images/veg4.webp",
+      "unit": "Bunch"
+    },
+    {
+      "id": 5,
+      "name": "Product 5",
+      "price": 29.99,
+      "image": "/images/veg5.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 6,
+      "name": "Product 6",
+      "price": 79.99,
+      "image": "/images/veg6.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 7,
+      "name": "Product 7",
+      "price": 69.99,
+      "image": "/images/veg1.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 8,
+      "name": "Product 8",
+      "price": 39.99,
+      "image": "/images/veg2.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 9,
+      "name": "Product 9",
+      "price": 59.99,
+      "image": "/images/veg3.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 10,
+      "name": "Product 10",
+      "price": 49.99,
+      "image": "/images/veg4.webp",
+      "unit": "Bunch"
+    },
+    {
+      "id": 11,
+      "name": "Product 11",
+      "price": 29.99,
+      "image": "/images/veg5.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 12,
+      "name": "Product 12",
+      "price": 79.99,
+      "image": "/images/veg6.webp",
+      "unit": "KG"
+    }
+  ],
+  "Fruits": [
+    {
+      "id": 13,
+      "name": "Product 13",
+      "price": 99.99,
+      "image": "/images/fru1.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 14,
+      "name": "Product 14",
+      "price": 49.99,
+      "image": "/images/fru2.webp",
+      "unit": "Dozen"
+    },
+    {
+      "id": 15,
+      "name": "Product 15",
+      "price": 59.99,
+      "image": "/images/fru3.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 16,
+      "name": "Product 16",
+      "price": 99.99,
+      "image": "/images/fru4.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 17,
+      "name": "Product 17",
+      "price": 49.99,
+      "image": "/images/fru5.webp",
+      "unit": "Piece"
+    },
+    {
+      "id": 18,
+      "name": "Product 18",
+      "price": 89.99,
+      "image": "/images/fru6.webp",
+      "unit": "Piece"
+    },
+    {
+      "id": 19,
+      "name": "Product 19",
+      "price": 99.99,
+      "image": "/images/fru1.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 20,
+      "name": "Product 20",
+      "price": 49.99,
+      "image": "/images/fru2.webp",
+      "unit": "Dozen"
+    },
+    {
+      "id": 21,
+      "name": "Product 21",
+      "price": 59.99,
+      "image": "/images/fru3.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 22,
+      "name": "Product 22",
+      "price": 99.99,
+      "image": "/images/fru4.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 23,
+      "name": "Product 23",
+      "price": 49.99,
+      "image": "/images/fru5.webp",
+      "unit": "Piece"
+    },
+    {
+      "id": 24,
+      "name": "Product 24",
+      "price": 89.99,
+      "image": "/images/fru6.webp",
+      "unit": "Piece"
+    }
+  ],
+  "Packaged": [
+    {
+      "id": 25,
+      "name": "Product 25",
+      "price": 39.99,
+      "image": "/images/pac1.webp",
+      "unit": "Packet"
+    },
+    {
+      "id": 26,
+      "name": "Product 26",
+      "price": 89.99,
+      "image": "/images/pac2.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 27,
+      "name": "Product 27",
+      "price": 59.99,
+      "image": "/images/pac3.webp",
+      "unit": "Packet"
+    },
+    {
+      "id": 28,
+      "name": "Product 28",
+      "price": 109.99,
+      "image": "/images/pac4.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 29,
+      "name": "Product 29",
+      "price": 149.99,
+      "image": "/images/pac5.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 30,
+      "name": "Product 30",
+      "price": 79.99,
+      "image": "/images/pac6.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 31,
+      "name": "Product 31",
+      "price": 39.99,
+      "image": "/images/pac1.webp",
+      "unit": "Packet"
+    },
+    {
+      "id": 32,
+      "name": "Product 32",
+      "price": 89.99,
+      "image": "/images/pac2.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 33,
+      "name": "Product 33",
+      "price": 59.99,
+      "image": "/images/pac3.webp",
+      "unit": "Packet"
+    },
+    {
+      "id": 34,
+      "name": "Product 34",
+      "price": 109.99,
+      "image": "/images/pac4.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 35,
+      "name": "Product 35",
+      "price": 149.99,
+      "image": "/images/pac5.webp",
+      "unit": "KG"
+    },
+    {
+      "id": 36,
+      "name": "Product 36",
+      "price": 79.99,
+      "image": "/images/pac6.webp",
+      "unit": "KG"
+    }
+  ]
+}

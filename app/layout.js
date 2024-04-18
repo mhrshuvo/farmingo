@@ -22,7 +22,9 @@ export default function RootLayout({ children }) {
           <Providers>
             <div className="sticky top-0 z-10">
               <NavbarWithSearch></NavbarWithSearch>
-              <CategoriesNavbar></CategoriesNavbar>
+              <div className="md:block hidden">
+                <CategoriesNavbar></CategoriesNavbar>
+              </div>
             </div>
             {children}
             <Toaster />

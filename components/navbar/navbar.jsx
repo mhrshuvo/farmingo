@@ -9,6 +9,7 @@ import LoginModal from "../modals/login-modal";
 import CartSidebar from "../sidebar/cart-sidebar";
 import { Button, Badge } from "@nextui-org/react";
 import { useCart } from "@/contexts/cart/cart-context";
+import Link from "next/link";
 
 export default function NavbarWithSearch() {
   const [selectedZone, setSelectedZone] = useState(null);
@@ -19,10 +20,12 @@ export default function NavbarWithSearch() {
 
   useEffect(() => {
     const savedZone = localStorage.getItem("selectedZone");
-    if (savedZone) {
+    if (!savedZone) {
+      setIsLocationModalOpen(true);
+    } else {
       setSelectedZone(savedZone);
     }
-  }, []); // Run once on mount
+  }, []);
 
   const handleZoneSelection = (zone) => {
     setSelectedZone(zone);
@@ -46,12 +49,18 @@ export default function NavbarWithSearch() {
     setIsCartSidebarOpen(!isCartSidebarOpen);
   };
 
+  const handleZoneButtonClick = () => {
+    setIsLocationModalOpen(true);
+  };
+
   return (
     <nav className="bg-[#152721]">
       <Container>
         <div className="md:flex lg:flex justify-between items-center px-4 py-4">
           <div className="flex items-center md:gap-10 lg:gap-10 gap-2">
-            <div className="font-bold text-white">LOGO</div>
+            <Link href={"/"} className="font-bold text-white">
+              LOGO
+            </Link>
             <div className="relative">
               <input
                 className="w-full md:w-[300px] lg:w-[600px] xl:w-[800px] h-10 px-3 pr-10 rounded-md focus:outline-none"
@@ -62,17 +71,16 @@ export default function NavbarWithSearch() {
             </div>
           </div>
           <div className="flex mt-5 md:mt-0 lg:mt-0 space-x-4 items-center">
-            <div
-              onClick={() => setIsLocationModalOpen(true)}
+            <button
+              onClick={handleZoneButtonClick}
               className="flex items-center gap-2 cursor-pointer font-bold"
             >
               <FaMapMarkerAlt className="text-white cursor-pointer" />
               {selectedZone && (
-                <div className="text-white mr-2">{selectedZone}</div>
+                <div className="text-white mr-2">{`${selectedZone}`}</div>
               )}
-            </div>
+            </button>
 
-            {/* Login and cart */}
             <div className="flex items-center gap-5">
               <div>
                 <Button
