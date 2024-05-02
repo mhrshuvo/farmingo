@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="w-[180px] md:w-[220px] h-[330px] mx-auto bg-white border rounded-md flex flex-col justify-between">
+    <div className="w-[180px] md:w-[200px] h-[300px] mx-auto bg-white border rounded-md flex flex-col justify-between">
       <img
         className="w-full mx-auto my-2 h-[50%] object-cover"
         src={image}
@@ -21,7 +21,7 @@ const ProductCard = ({ product }) => {
       />
       <div className="px-4 py-2">
         <div className="font-semibold  mb-2 text-gray-800">{name}</div>
-        <div className="text-sm text-gray-600 mb-2">{type}</div>{" "}
+        <div className="text-sm text-gray-600 mb-2">{type}</div>
         {/* Display product type */}
         <div className="flex items-center">
           <div className="font-bold text-lg text-[#145D4C]">৳ {price}</div>

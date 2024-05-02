@@ -2,7 +2,7 @@ import React from "react";
 import Container from "../container";
 
 const CheckoutPage = () => {
-  return <Container>HELLO CHECKOUT</Container>;
+  return <Container>CHECKOUT PAGE</Container>;
 };
 
 export default CheckoutPage;

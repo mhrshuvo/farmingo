@@ -32,13 +32,13 @@ export default function Home() {
   return (
     <main>
       <Container>
-        <div className="my-20 mx-auto space-y-10 h-full">
+        <div className="my-20 space-y-20 mx-auto  h-full">
           {/* Vegetables section */}
 
           <section>
             <div className="flex justify-between items-center mx-2">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Vegetables</h2>
+                <h2 className="text-4xl font-bold mb-4">Vegetables</h2>
               </div>
               <div>
                 <Link
@@ -61,7 +61,7 @@ export default function Home() {
           <section>
             <div className="flex justify-between items-center mx-2">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Fruits</h2>
+                <h2 className="text-4xl font-bold mb-4">Fruits</h2>
               </div>
               <div>
                 <Link
@@ -84,7 +84,7 @@ export default function Home() {
           <section>
             <div className="flex justify-between items-center mx-2">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Packaged Products</h2>
+                <h2 className="text-4xl font-bold mb-4">Packaged Products</h2>
               </div>
               <div>
                 <Link

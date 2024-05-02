@@ -34,8 +34,8 @@ const CategoriesNavbar = () => {
           <Link href={"/packaged-products"} className="mb-2 sm:mb-0">
             Packaged Products
           </Link>
-          <li className="mb-2 sm:mb-0">Bakery</li>
-          <li className="mb-2 sm:mb-0">Breakfast Items</li>
+          {/* <li className="mb-2 sm:mb-0">Bakery</li>
+          <li className="mb-2 sm:mb-0">Breakfast Items</li> */}
 
           <li>
             <Dropdown>
