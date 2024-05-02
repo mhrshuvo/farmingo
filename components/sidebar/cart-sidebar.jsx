@@ -82,7 +82,7 @@ const CartSidebar = ({ isOpen, toggle }) => {
                 >
                   <div className="flex items-center">
                     <img
-                      src={item.image}
+                      src={`${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`}
                       alt={item.name}
                       className="w-12 h-12 mr-4 rounded-md"
                     />

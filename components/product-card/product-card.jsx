@@ -16,7 +16,7 @@ const ProductCard = ({ product }) => {
     <div className="w-[180px] md:w-[200px] h-[300px] mx-auto bg-white border rounded-md flex flex-col justify-between">
       <img
         className="w-full mx-auto my-2 h-[50%] object-cover"
-        src={image}
+        src={`${process.env.NEXT_PUBLIC_IMG_URL}${image}`}
         alt="Product Image"
       />
       <div className="px-4 py-2">

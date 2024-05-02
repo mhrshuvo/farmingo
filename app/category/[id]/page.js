@@ -1,20 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Container from "../container";
+import { useState, useEffect } from "react";
 import ProductCard from "@/components/product-card/product-card";
+import Container from "@/app/container";
 
-export default function FruitsPage() {
-  const [fruits, setFruits] = useState([]);
+function CategoryPage({ params }) {
+  const { id } = params;
+
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("api/products.json");
+        // Fetch data from the API
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/category_products/${id}`
+        );
         const data = await response.json();
-        setFruits(data.Fruits);
+
+        // Update state with products
+        setProducts(data);
       } catch (error) {
-        console.error("Error fetching fruits:", error);
+        console.error("Error fetching products:", error);
       }
     };
 
@@ -24,15 +31,13 @@ export default function FruitsPage() {
   return (
     <main>
       <Container>
-        <div className="my-20 mx-auto space-y-10">
+        <div className="my-20 space-y-20 mx-auto h-full">
           <section>
             <div className="flex justify-between items-center mx-2">
-              <div>
-                <h2 className="text-2xl font-bold mb-4">Fruits</h2>
-              </div>
+              <h2 className="text-3xl font-semibold mb-4">Products</h2>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-6 gap-4 xl:gap-6">
-              {fruits.map((product) => (
+              {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -42,3 +47,5 @@ export default function FruitsPage() {
     </main>
   );
 }
+
+export default CategoryPage;
