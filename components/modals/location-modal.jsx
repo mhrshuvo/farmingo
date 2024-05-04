@@ -1,59 +1,32 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
+import axios from "axios";
+import { ROUTES } from "@/routes/routes";
 
 export default function LocationModal({ isOpen, onClose, onZoneSelect }) {
-  const dhakaAreas = [
-    "Uttara",
-    "Gulshan",
-    "Banani",
-    "Dhanmondi",
-    "Mirpur",
-    "Mohammadpur",
-    "Baridhara",
-    "Baridhara DOHS",
-    "Bashundhara",
-    "Elephant Road",
-    "Farmgate",
-    "Jatrabari",
-    "Khilgaon",
-    "Kuril",
-    "Malibagh",
-    "Motijheel",
-    "Puran Dhaka",
-    "Ramna",
-    "Shyamoli",
-    "Tejgaon",
-    "Tejgaon Industrial Area",
-    "Uttar Khan",
-    "Wari",
-    "Banglamotor",
-    "Hatirpool",
-    "Kawran Bazar",
-    "Panthapath",
-    "Shahbagh",
-    "Gendaria",
-    "Kotwali",
-    "Lalbagh",
-    "New Market",
-    "Sutrapur",
-    "Azimpur",
-    "Babubazar",
-    "Chankharpool",
-    "Chawkbazar",
-    "Dholaikhal",
-    "Gopibagh",
-    "Kamrangirchar",
-    "Matuail",
-    "Postagola",
-    "Shampur",
-    "Shyampur",
-    "Wari",
-  ];
+  const [Zones, setZones] = useState([]);
+
+  useEffect(() => {
+    const fetchZones = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ZONES}`
+        );
+        setZones(response.data);
+      } catch (error) {
+        console.error("Error fetching Zones:", error);
+      }
+    };
+
+    if (isOpen) {
+      fetchZones();
+    }
+  }, [isOpen]);
 
   const handleZoneSelection = (zone) => {
-    onZoneSelect(zone);
+    onZoneSelect(zone.name);
     onClose();
   };
 
@@ -75,13 +48,13 @@ export default function LocationModal({ isOpen, onClose, onZoneSelect }) {
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <h2 className="text-lg font-bold mb-4">Select a Zone</h2>
             <div className="overflow-y-auto max-h-[300px]">
-              {dhakaAreas.map((area, index) => (
+              {Zones.map((zone, index) => (
                 <button
                   key={index}
-                  onClick={() => handleZoneSelection(area)}
+                  onClick={() => handleZoneSelection(zone)}
                   className="w-full text-left py-2 px-4 mb-2 bg-gray-100 hover:bg-gray-200 rounded transition-colors duration-300"
                 >
-                  {area}
+                  {zone.name}
                 </button>
               ))}
             </div>

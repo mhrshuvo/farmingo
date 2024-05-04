@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import ProductCard from "@/components/product-card/product-card";
 import Container from "./container";
 import Link from "next/link";
+import { ROUTES } from "@/routes/routes";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
@@ -13,7 +14,7 @@ export default function Home() {
       try {
         // Fetch data from the API
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/category_products`
+          `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.CATEGORY_PRODUCTS}`
         );
         const data = await response.json();
 

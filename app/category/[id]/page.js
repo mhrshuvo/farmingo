@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ProductCard from "@/components/product-card/product-card";
 import Container from "@/app/container";
+import { ROUTES } from "@/routes/routes";
 
 function CategoryPage({ params }) {
   const { id } = params;
@@ -14,7 +15,7 @@ function CategoryPage({ params }) {
       try {
         // Fetch data from the API
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/category_products/${id}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.CATEGORY_PRODUCTS}/${id}`
         );
         const data = await response.json();
 
