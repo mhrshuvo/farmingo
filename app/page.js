@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <main>
       <Container>
-        <div className="my-20 space-y-20 mx-auto h-full">
+        <div className="my-20 space-y-20 mx-auto h-screen">
           {categories.map((category) => (
             <section key={category.id}>
               <div className="flex justify-between items-center mx-2">
