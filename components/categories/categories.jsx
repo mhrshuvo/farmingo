@@ -25,13 +25,13 @@ const CategoriesNavbar = () => {
     <div className="bg-gray-100 py-5">
       <Container>
         <ul className="flex flex-wrap justify-between font-semibold cursor-pointer mx-1">
-          <Link href={"/vegetables"} className="mb-2 sm:mb-0">
+          <Link href={"/"} className="mb-2 sm:mb-0">
             Vegetables
           </Link>
-          <Link href={"/fruits"} className="mb-2 sm:mb-0">
+          <Link href={"/"} className="mb-2 sm:mb-0">
             Fruits
           </Link>
-          <Link href={"/packaged-products"} className="mb-2 sm:mb-0">
+          <Link href={"/"} className="mb-2 sm:mb-0">
             Packaged Products
           </Link>
           {/* <li className="mb-2 sm:mb-0">Bakery</li>

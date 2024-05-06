@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
+import { FaSearch, FaMapMarkerAlt, FaUserCircle } from "react-icons/fa";
 import { CiShoppingCart } from "react-icons/ci";
 import Container from "@/app/container";
 import LocationModal from "../modals/location-modal";
@@ -9,6 +9,7 @@ import LoginModal from "../modals/login-modal";
 import CartSidebar from "../sidebar/cart-sidebar";
 import { Button, Badge } from "@nextui-org/react";
 import { useCart } from "@/contexts/cart/cart-context";
+import { useAuth } from "@/contexts/auth/auth-context";
 import Link from "next/link";
 
 export default function NavbarWithSearch() {
@@ -17,6 +18,7 @@ export default function NavbarWithSearch() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
   const { cart } = useCart();
+  const { isAuthenticated, logout, user } = useAuth();
 
   useEffect(() => {
     const savedZone = localStorage.getItem("selectedZone");
@@ -53,6 +55,37 @@ export default function NavbarWithSearch() {
     setIsLocationModalOpen(true);
   };
 
+  const handleLogout = () => {
+    if (isAuthenticated()) {
+      logout();
+    } else {
+      openLoginModal();
+    }
+  };
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleClickOutside = (event) => {
+    if (!event.target.closest(".menu-content")) {
+      setIsMenuOpen(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (isMenuOpen) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   return (
     <nav className="bg-[#152721]">
       <Container>
@@ -82,7 +115,41 @@ export default function NavbarWithSearch() {
             </button>
 
             <div className="flex items-center gap-5">
-              <div>
+              {isAuthenticated() ? (
+                <div className="relative inline-block text-left">
+                  <button
+                    className="text-white cursor-pointer"
+                    onClick={handleMenuToggle}
+                  >
+                    <FaUserCircle className="h-6 w-6" />
+                  </button>
+                  {isMenuOpen && (
+                    <div className="menu-content   absolute   md:right-5 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
+                      <div
+                        className="py-1"
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby="options-menu"
+                      >
+                        <Link
+                          href="/account"
+                          className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          {user}
+                        </Link>
+                        <button
+                          className="w-full text-left px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
                 <Button
                   color="#FFFFFF"
                   variant="bordered"
@@ -91,8 +158,7 @@ export default function NavbarWithSearch() {
                 >
                   Login
                 </Button>
-              </div>
-
+              )}
               <div className="cursor-pointer" onClick={toggleCartSidebar}>
                 <Badge
                   content={cart

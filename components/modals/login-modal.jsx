@@ -12,8 +12,12 @@ import {
   Link,
 } from "@nextui-org/react";
 import toast from "react-hot-toast";
+import { useAuth } from "@/contexts/auth/auth-context";
 
 export default function LoginModal({ isOpen, onClose }) {
+  // AUTH CONTEXT
+  const { login, setUser } = useAuth();
+
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -32,8 +36,10 @@ export default function LoginModal({ isOpen, onClose }) {
     });
   };
 
+  // this function works to signup or login the user
   const handleFormSubmit = async () => {
     try {
+      // Signup logic here
       if (isSignUp) {
         const response = await fetch("http://192.168.68.109:8000/api/v1/zones");
         if (!response.ok) {
@@ -48,10 +54,10 @@ export default function LoginModal({ isOpen, onClose }) {
         }
         const zoneId = zone.id;
 
-        setFormData((prevFormData) => ({
-          ...prevFormData,
+        const formDataWithZone = {
+          ...formData,
           zone_id: zoneId,
-        }));
+        };
 
         const signupResponse = await fetch(
           "http://192.168.68.109:8000/api/v1/signup",
@@ -61,13 +67,31 @@ export default function LoginModal({ isOpen, onClose }) {
               "Content-Type": "application/json",
               Accept: "application/json",
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(formDataWithZone),
           }
         );
 
         if (signupResponse.ok) {
           toast.success("Sign-up successful");
+
+          const responseData = await signupResponse.json();
+          const token = responseData.token;
+          const userName = responseData.name;
+          localStorage.setItem("UserName", userName);
+          setUser(userName);
+
+          // Use the login function from AuthContext to set the token
+          login(token);
+
           onClose();
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            password: "",
+            zone_id: 1,
+            address: "",
+          });
         } else {
           if (signupResponse.status === 422) {
             const responseData = await signupResponse.json();
@@ -81,13 +105,52 @@ export default function LoginModal({ isOpen, onClose }) {
           }
         }
       } else {
-        // Handle sign-in form submission
-        toast.error("Signing in with data:", formData);
-        // Here you would typically make an API request to the server to authenticate the user
+        // Login logic here
+        const loginData = {
+          email: formData.emailOrPhone,
+          password: formData.password,
+        };
+
+        const loginResponse = await fetch(
+          "http://192.168.68.109:8000/api/v1/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify(loginData),
+          }
+        );
+
+        if (loginResponse.ok) {
+          toast.success("Login successful");
+
+          const responseData = await loginResponse.json();
+          const token = responseData.token;
+          const userName = responseData.name;
+          localStorage.setItem("UserName", userName);
+          setUser(userName);
+
+          // Use the login function from AuthContext to set the token
+          login(token);
+
+          onClose();
+          setFormData({
+            ...formData,
+            emailOrPhone: "",
+            password: "",
+          });
+        } else {
+          if (loginResponse.status === 401) {
+            toast.error("Invalid email or password");
+          } else {
+            toast.error("Login failed");
+          }
+        }
       }
     } catch (error) {
-      toast.error("Error signing up:", error);
-      // Optionally, you can handle errors that occur during the sign-up process
+      toast.error("Error signing up or in:", error);
     }
   };
 
@@ -159,9 +222,6 @@ export default function LoginModal({ isOpen, onClose }) {
                 />
               )}
               <div className="flex py-2 px-1 justify-between items-center">
-                <Link className="text-[#145D4C]" href="#" size="sm">
-                  Forgot password?
-                </Link>
                 <div className="flex justify-center">
                   <Link
                     className="text-[#145D4C] cursor-pointer"

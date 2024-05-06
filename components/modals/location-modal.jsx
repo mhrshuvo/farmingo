@@ -6,7 +6,7 @@ import axios from "axios";
 import { ROUTES } from "@/routes/routes";
 
 export default function LocationModal({ isOpen, onClose, onZoneSelect }) {
-  const [Zones, setZones] = useState([]);
+  const [zones, setZones] = useState([]);
 
   useEffect(() => {
     const fetchZones = async () => {
@@ -32,23 +32,22 @@ export default function LocationModal({ isOpen, onClose, onZoneSelect }) {
 
   return (
     <div
-      className={`fixed z-10 inset-0 transition-opacity ${
+      className={`fixed z-10 inset-0 bg-black bg-opacity-50 transition-opacity ${
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
       <div className="flex items-center justify-center min-h-screen">
-        <div className="fixed inset-0 bg-gray-500 opacity-75 transition-opacity"></div>
-        <div className="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+        <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl w-full max-w-md relative">
           <button
             className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700"
             onClick={onClose}
           >
             <MdClose size={24} />
           </button>
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <h2 className="text-lg font-bold mb-4">Select a Zone</h2>
-            <div className="overflow-y-auto max-h-[300px]">
-              {Zones.map((zone, index) => (
+            <div className="overflow-y-auto max-h-60">
+              {zones.map((zone, index) => (
                 <button
                   key={index}
                   onClick={() => handleZoneSelection(zone)}
