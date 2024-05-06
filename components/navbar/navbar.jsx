@@ -19,6 +19,7 @@ export default function NavbarWithSearch() {
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
   const { cart } = useCart();
   const { isAuthenticated, logout, user } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const savedZone = localStorage.getItem("selectedZone");
@@ -62,8 +63,6 @@ export default function NavbarWithSearch() {
       openLoginModal();
     }
   };
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
