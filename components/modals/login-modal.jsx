@@ -13,6 +13,7 @@ import {
 } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import { useAuth } from "@/contexts/auth/auth-context";
+import { ROUTES } from "@/routes/routes";
 
 export default function LoginModal({ isOpen, onClose }) {
   // AUTH CONTEXT
@@ -41,7 +42,9 @@ export default function LoginModal({ isOpen, onClose }) {
     try {
       // Signup logic here
       if (isSignUp) {
-        const response = await fetch("http://192.168.68.109:8000/api/v1/zones");
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ZONES}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch zones");
         }
@@ -60,7 +63,7 @@ export default function LoginModal({ isOpen, onClose }) {
         };
 
         const signupResponse = await fetch(
-          "http://192.168.68.109:8000/api/v1/signup",
+          `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.SIGN_UP}`,
           {
             method: "POST",
             headers: {
@@ -112,7 +115,7 @@ export default function LoginModal({ isOpen, onClose }) {
         };
 
         const loginResponse = await fetch(
-          "http://192.168.68.109:8000/api/v1/login",
+          `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.LOGIN}`,
           {
             method: "POST",
             headers: {
