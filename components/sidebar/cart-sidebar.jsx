@@ -121,7 +121,7 @@ const CartSidebar = ({ isOpen, toggle }) => {
                 onClick={toggle}
                 className="bg-green-600 text-white px-4 py-2 rounded-md mt-4 w-full"
               >
-                Checkout
+                Proceed to Payment
               </button>
             </Link>
           </div>

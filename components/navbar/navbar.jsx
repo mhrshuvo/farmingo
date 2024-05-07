@@ -11,16 +11,19 @@ import { Button, Badge } from "@nextui-org/react";
 import { useCart } from "@/contexts/cart/cart-context";
 import { useAuth } from "@/contexts/auth/auth-context";
 import Link from "next/link";
+import { useAuthModal } from "@/contexts/auth/login-modal"; // Assuming the correct path to the auth modal context
 
 export default function NavbarWithSearch() {
+  // State variables and hooks
+  const { openLoginModal, isLoginModalOpen, closeLoginModal } = useAuthModal();
   const [selectedZone, setSelectedZone] = useState(null);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
   const { cart } = useCart();
-  const { isAuthenticated, logout, user } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // useEffect to handle the initial state of the location modal
   useEffect(() => {
     const savedZone = localStorage.getItem("selectedZone");
     if (!savedZone) {
@@ -30,6 +33,7 @@ export default function NavbarWithSearch() {
     }
   }, []);
 
+  // Handlers for different actions
   const handleZoneSelection = (zone) => {
     setSelectedZone(zone);
     setIsLocationModalOpen(false);
@@ -38,14 +42,6 @@ export default function NavbarWithSearch() {
 
   const closeLocationModal = () => {
     setIsLocationModalOpen(false);
-  };
-
-  const openLoginModal = () => {
-    setIsLoginModalOpen(true);
-  };
-
-  const closeLoginModal = () => {
-    setIsLoginModalOpen(false);
   };
 
   const toggleCartSidebar = () => {
@@ -60,7 +56,7 @@ export default function NavbarWithSearch() {
     if (isAuthenticated()) {
       logout();
     } else {
-      openLoginModal();
+      openLoginModal(); // Opening the login modal if not authenticated
     }
   };
 
@@ -74,7 +70,8 @@ export default function NavbarWithSearch() {
     }
   };
 
-  React.useEffect(() => {
+  // useEffect to handle clicks outside the menu
+  useEffect(() => {
     if (isMenuOpen) {
       document.addEventListener("click", handleClickOutside);
     } else {
@@ -87,8 +84,11 @@ export default function NavbarWithSearch() {
 
   return (
     <nav className="bg-[#152721]">
+      {/* Container for the navbar */}
       <Container>
+        {/* Navbar content */}
         <div className="md:flex lg:flex justify-between items-center px-4 py-4">
+          {/* Logo and search bar */}
           <div className="flex items-center md:gap-10 lg:gap-10 gap-2">
             <Link href={"/"} className="font-bold text-white">
               LOGO
@@ -102,7 +102,9 @@ export default function NavbarWithSearch() {
               <FaSearch className="absolute right-3 top-2/4 transform -translate-y-2/4 text-gray-400" />
             </div>
           </div>
+          {/* User actions */}
           <div className="flex mt-5 md:mt-0 lg:mt-0 space-x-4 items-center">
+            {/* Select zone button */}
             <button
               onClick={handleZoneButtonClick}
               className="flex items-center gap-2 cursor-pointer font-bold"
@@ -112,8 +114,9 @@ export default function NavbarWithSearch() {
                 <div className="text-white mr-2">{`${selectedZone}`}</div>
               )}
             </button>
-
+            {/* User profile and cart */}
             <div className="flex items-center gap-5">
+              {/* User profile and logout */}
               {isAuthenticated() ? (
                 <div className="relative inline-block text-left">
                   <button
@@ -149,6 +152,7 @@ export default function NavbarWithSearch() {
                   )}
                 </div>
               ) : (
+                // Login button
                 <Button
                   color="#FFFFFF"
                   variant="bordered"
@@ -158,6 +162,7 @@ export default function NavbarWithSearch() {
                   Login
                 </Button>
               )}
+              {/* Cart button */}
               <div className="cursor-pointer" onClick={toggleCartSidebar}>
                 <Badge
                   content={cart
@@ -172,6 +177,7 @@ export default function NavbarWithSearch() {
           </div>
         </div>
       </Container>
+      {/* Modals and sidebars */}
       <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
       <LocationModal
         isOpen={isLocationModalOpen}
