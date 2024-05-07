@@ -118,7 +118,8 @@ const CheckoutPage = () => {
                 >
                   <p className="text-gray-600 flex items-center justify-between">
                     <span>
-                      Total: ৳{item.quantity} * ৳{item.price} =৳
+                      Total: {item.quantity}
+                      {item.unit} * ৳{item.price} =৳
                     </span>
                     <span>{item.quantity * item.price}</span>
                   </p>
