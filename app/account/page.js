@@ -20,10 +20,10 @@ const AccountPage = () => {
   const [formData, setFormData] = useState(initialState);
   const [zones, setZones] = useState([]);
 
-  // API endpoints (replace with your actual URLs)
+  // API endpoints
   const profileUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.PROFILE}`;
   const zonesUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ZONES}`;
-  const profileUpdateUrl = "http://192.168.68.113:8000/api/v1/profile_update";
+  const profileUpdateUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.UPDATE_PROFILE}`;
 
   useEffect(() => {
     const fetchInitialData = async () => {
