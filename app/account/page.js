@@ -3,13 +3,17 @@
 import React, { useEffect, useState } from "react";
 import Container from "../container";
 import { ROUTES } from "@/routes/routes";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const AccountPage = () => {
+  const router = useRouter();
+
   const initialState = {
     name: "",
     email: "",
     phone: "",
-    zone: "",
+    zone_id: "",
     address: "",
   };
 
@@ -19,6 +23,7 @@ const AccountPage = () => {
   // API endpoints (replace with your actual URLs)
   const profileUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.PROFILE}`;
   const zonesUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ZONES}`;
+  const profileUpdateUrl = "http://192.168.68.113:8000/api/v1/profile_update";
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -43,14 +48,12 @@ const AccountPage = () => {
         const profileData = await profileResponse.json();
         const zonesData = await zonesResponse.json();
 
-        setFormData(profileData); // Update form data with fetched values
+        setFormData({
+          ...profileData,
+          zone_id: profileData.zone_id, // Assuming the initial data uses `zone_id`
+        }); // Update form data with fetched values
 
-        // Filter out car options (assuming zonesData contains zone objects)
-        const filteredZones = zonesData.filter(
-          (zone) => !zone.type || zone.type.toLowerCase() !== "car"
-        );
-
-        setZones(filteredZones);
+        setZones(zonesData);
       } catch (error) {
         console.error("Error fetching initial data:", error);
       }
@@ -60,12 +63,54 @@ const AccountPage = () => {
   }, []);
 
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const authToken = localStorage.getItem("authToken");
+
+    if (!authToken) {
+      console.error("Missing authToken in localStorage");
+      // Handle missing authToken (e.g., redirect to login)
+      return;
+    }
+
+    try {
+      const response = await fetch(profileUpdateUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          zone_id: formData.zone_id,
+          address: formData.address,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+      toast.success("Profile updated successfully:", result);
+      router.push("/");
+
+      // Optionally, handle the success (e.g., show a success message)
+    } catch (error) {
+      toast.error("Error updating profile:", error);
+      // Optionally, handle the error (e.g., show an error message)
+    }
   };
 
   return (
     <Container>
-      <form className="flex flex-col space-y-4 lg:w-[500px] h-[60vh] lg:mx-auto mg:mx-20 mx-10 my-10">
+      <form
+        className="flex flex-col space-y-4 lg:w-[500px] h-[60vh] lg:mx-auto mg:mx-20 mx-10 my-10"
+        onSubmit={handleSubmit}
+      >
         <div className="flex flex-col">
           <label htmlFor="name" className="text-sm font-medium">
             Name
@@ -106,16 +151,21 @@ const AccountPage = () => {
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="zone" className="text-sm font-medium">
+          <label htmlFor="zone_id" className="text-sm font-medium">
             Zone
           </label>
           <select
-            id="zones"
-            name="zones"
+            id="zone_id"
+            name="zone_id"
             className="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+            value={formData.zone_id}
+            onChange={handleChange}
           >
+            <option value="" disabled>
+              Select your zone
+            </option>
             {zones.map((zone) => (
-              <option key={zone.id || zone.name} value={zone.id || zone.name}>
+              <option key={zone.id} value={zone.id}>
                 {zone.name}
               </option>
             ))}
@@ -130,6 +180,7 @@ const AccountPage = () => {
             name="address"
             className="rounded-md border border-gray-300 px-3 py-2 h-24 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
             value={formData.address}
+            onChange={handleChange}
           />
         </div>
         <button

@@ -7,4 +7,5 @@ export const ROUTES = {
   CATEGORIES: "/categories",
   ORDER: "/consumer/order",
   PROFILE: "/profile",
+  UPDATE_PROFILE: "/profile_update",
 };
