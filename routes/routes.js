@@ -8,4 +8,5 @@ export const ROUTES = {
   ORDER: "/consumer/order",
   PROFILE: "/profile",
   UPDATE_PROFILE: "/profile_update",
+  MY_ORDERS: "/consumer/my_orders",
 };

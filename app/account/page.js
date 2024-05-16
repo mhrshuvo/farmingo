@@ -31,15 +31,14 @@ const AccountPage = () => {
         const authToken = localStorage.getItem("authToken");
 
         if (!authToken) {
-          console.error("Missing authToken in localStorage");
-          // Handle missing authToken (e.g., redirect to login)
+          toast.error("Missing authToken in localStorage");
           return;
         }
 
         const [profileResponse, zonesResponse] = await Promise.all([
           fetch(profileUrl, {
             headers: {
-              Authorization: `Bearer ${authToken}`, // Include authToken in header
+              Authorization: `Bearer ${authToken}`,
             },
           }),
           fetch(zonesUrl),
@@ -50,8 +49,8 @@ const AccountPage = () => {
 
         setFormData({
           ...profileData,
-          zone_id: profileData.zone_id, // Assuming the initial data uses `zone_id`
-        }); // Update form data with fetched values
+          zone_id: profileData.zone_id,
+        });
 
         setZones(zonesData);
       } catch (error) {
@@ -97,11 +96,8 @@ const AccountPage = () => {
       const result = await response.json();
       toast.success("Profile updated successfully:", result);
       router.push("/");
-
-      // Optionally, handle the success (e.g., show a success message)
     } catch (error) {
       toast.error("Error updating profile:", error);
-      // Optionally, handle the error (e.g., show an error message)
     }
   };
 
@@ -111,6 +107,9 @@ const AccountPage = () => {
         className="flex flex-col space-y-4 lg:w-[500px] h-[60vh] lg:mx-auto mg:mx-20 mx-10 my-10"
         onSubmit={handleSubmit}
       >
+        <div>
+          <h1 className="text-3xl font-semibold text-center">Profile</h1>
+        </div>
         <div className="flex flex-col">
           <label htmlFor="name" className="text-sm font-medium">
             Name
