@@ -5,6 +5,7 @@ import ProductCard from "@/components/product-card/product-card";
 import Container from "./container";
 import Link from "next/link";
 import { ROUTES } from "@/routes/routes";
+import CategoriesNavbar from "@/components/categories/categories";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
@@ -30,6 +31,11 @@ export default function Home() {
 
   return (
     <main>
+      <div className="sticky top-16">
+        <div className="md:block hidden">
+          <CategoriesNavbar></CategoriesNavbar>
+        </div>
+      </div>
       <Container>
         <div className="my-20 space-y-20 mx-auto h-screen">
           {categories.map((category) => (

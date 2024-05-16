@@ -3,15 +3,14 @@ import "./globals.css";
 import { Providers } from "./providers";
 import NavbarWithSearch from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
-import CategoriesNavbar from "@/components/categories/categories";
 import { CartProvider } from "@/contexts/cart/cart-context";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Consumer App",
-  description: "Consumer app for end to end users",
+  title: "Firmingo",
+  description: "Firmingo app for end to end users",
 };
 
 export default function RootLayout({ children }) {
@@ -22,9 +21,6 @@ export default function RootLayout({ children }) {
           <Providers>
             <div className="sticky top-0 z-10">
               <NavbarWithSearch></NavbarWithSearch>
-              <div className="md:block hidden">
-                <CategoriesNavbar></CategoriesNavbar>
-              </div>
             </div>
             {children}
             <Toaster />

@@ -1,4 +1,6 @@
 import React from "react";
+import Logo from "../logo/logo";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -8,7 +10,7 @@ const Footer = () => {
           <div className="mb-6 md:mb-0">
             <a href="/" className="flex items-center">
               <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-                LOGO
+                <Logo></Logo>
               </span>
             </a>
           </div>
@@ -20,17 +22,9 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-200 font-medium">
                 <li className="mb-4">
-                  <a href="/" className="hover:underline">
+                  <Link href="/partner" className="hover:underline">
                     Become a Partner
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://discord.gg/4eeurUVvTy"
-                    className="hover:underline"
-                  >
-                    Connect with us a Partner
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -56,12 +50,9 @@ const Footer = () => {
         </div>
         <hr className="my-6 border-gray-100 sm:mx-auto lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
-          <span className="text-sm text-gray-200 sm:text-center">
-            © 2024{" "}
-            <a href="/" className="hover:underline">
-              Company Name
-            </a>
-            . All Rights Reserved.
+          <span className="text-sm text-gray-200 sm:text-center flex">
+            <span className="mr-2">© 2024</span> <Logo></Logo>{" "}
+            <span className="ml-2">all rights reserved.</span>
           </span>
           <div className="flex mt-4 sm:justify-center sm:mt-0">
             <a href="#" className="text-gray-200 hover:text-gray-900">

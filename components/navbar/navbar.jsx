@@ -12,6 +12,7 @@ import { useCart } from "@/contexts/cart/cart-context";
 import { useAuth } from "@/contexts/auth/auth-context";
 import Link from "next/link";
 import { useAuthModal } from "@/contexts/auth/login-modal"; // Assuming the correct path to the auth modal context
+import Logo from "../logo/logo";
 
 export default function NavbarWithSearch() {
   // State variables and hooks
@@ -91,7 +92,7 @@ export default function NavbarWithSearch() {
           {/* Logo and search bar */}
           <div className="flex items-center md:gap-10 lg:gap-10 gap-2">
             <Link href={"/"} className="font-bold text-white">
-              LOGO
+              <Logo></Logo>
             </Link>
             <div className="relative">
               <input
@@ -138,7 +139,15 @@ export default function NavbarWithSearch() {
                           className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                          {user}
+                          Profile
+                        </Link>
+
+                        <Link
+                          href="/orders"
+                          className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          Orders
                         </Link>
                         <button
                           className="w-full text-left px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"

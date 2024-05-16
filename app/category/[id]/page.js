@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import ProductCard from "@/components/product-card/product-card";
 import Container from "@/app/container";
 import { ROUTES } from "@/routes/routes";
+import CategoriesNavbar from "@/components/categories/categories";
 
 function CategoryPage({ params }) {
   const { id } = params;
@@ -31,6 +32,11 @@ function CategoryPage({ params }) {
 
   return (
     <main>
+      <div className="sticky top-16">
+        <div className="md:block hidden">
+          <CategoriesNavbar></CategoriesNavbar>
+        </div>
+      </div>
       <Container>
         <div className="my-20 space-y-20 mx-auto h-full">
           <section>

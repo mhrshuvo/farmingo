@@ -6,4 +6,5 @@ export const ROUTES = {
   LOG_OUT: "/logout",
   CATEGORIES: "/categories",
   ORDER: "/consumer/order",
+  PROFILE: "/profile",
 };
