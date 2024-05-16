@@ -62,7 +62,7 @@ const CheckoutPage = () => {
 
     try {
       const response = await fetch(
-        "http://192.168.68.109:8000/api/v1/consumer/order",
+        `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ORDER}`,
         requestOptions
       );
       if (!response.ok) {

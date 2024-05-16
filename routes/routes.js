@@ -5,4 +5,5 @@ export const ROUTES = {
   LOGIN: "/login",
   LOG_OUT: "/logout",
   CATEGORIES: "/categories",
+  ORDER: "/consumer/order",
 };
