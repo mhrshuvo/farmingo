@@ -4,7 +4,7 @@ import React from "react";
 const loading = () => {
   return (
     <div className="h-screen text-center">
-      <Spinner label="Success" color="success" labelColor="success" />
+      <Spinner label="Loading" color="success" labelColor="success" />
     </div>
   );
 };

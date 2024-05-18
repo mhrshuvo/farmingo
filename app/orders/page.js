@@ -2,6 +2,7 @@
 
 import { ROUTES } from "@/routes/routes";
 import { Button } from "@nextui-org/react";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
 const OrderTable = () => {
@@ -73,9 +74,9 @@ const OrderTable = () => {
                 </td>
 
                 <td className="px-4 py-2 border-b text-center">
-                  <Button size="sm" color="success" variant="bordered">
-                    Details
-                  </Button>
+                  <Link href={`/orders/${order.id}`}>
+                    <p className="text-green-800 font-bold">Details</p>
+                  </Link>
                 </td>
               </tr>
             ))}

@@ -1,7 +1,7 @@
 import { Spinner } from "@nextui-org/react";
 import React from "react";
 
-const loading = () => {
+const Loader = () => {
   return (
     <div className="h-screen text-center">
       <Spinner label="Loading" color="success" labelColor="success" />
@@ -9,4 +9,4 @@ const loading = () => {
   );
 };
 
-export default loading;
+export default Loader;
