@@ -146,16 +146,18 @@ const OrderDetailsPage = () => {
       </div>
       <div className="text-center mt-10 flex flex-col md:flex-row justify-center gap-4 no-print">
         <Link href="/orders">
-          <button className="bg-green-900 py-2 px-4 rounded-lg text-white font-semibold">
+          <button className="bg-green-900 py-2 px-4 rounded-lg text-white font-semibold w-full md:w-auto">
             Back to Orders
           </button>
         </Link>
-        <button
-          onClick={handlePrint}
-          className="bg-blue-600 py-2 px-4 rounded-lg text-white font-semibold"
-        >
-          Print as PDF
-        </button>
+        <div>
+          <button
+            onClick={handlePrint}
+            className="bg-blue-600 py-2 px-4 rounded-lg text-white font-semibold w-full md:w-auto"
+          >
+            Print as PDF
+          </button>
+        </div>
       </div>
     </div>
   );
