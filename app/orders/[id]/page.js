@@ -146,11 +146,16 @@ const OrderDetailsPage = () => {
       </div>
       <div className="text-center mt-10 flex flex-col md:flex-row justify-center gap-4 no-print">
         <Link href="/orders">
-          <Button color="primary">Back to Orders</Button>
+          <button className="bg-green-900 py-2 px-4 rounded-lg text-white font-semibold">
+            Back to Orders
+          </button>
         </Link>
-        <Button color="secondary" onClick={handlePrint}>
+        <button
+          onClick={handlePrint}
+          className="bg-blue-600 py-2 px-4 rounded-lg text-white font-semibold"
+        >
           Print as PDF
-        </Button>
+        </button>
       </div>
     </div>
   );
