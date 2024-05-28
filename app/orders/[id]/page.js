@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@nextui-org/react";
 import Loader from "@/components/loader/Loader";
 import html2pdf from "html2pdf.js";
 import { useRouter } from "next/navigation";
