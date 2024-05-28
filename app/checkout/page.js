@@ -55,7 +55,7 @@ const CheckoutPage = () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer ${authToken}`, // Include the auth token if required
+        Authorization: `Bearer ${authToken}`, 
       },
       body: JSON.stringify(orderData),
     };

@@ -6,13 +6,16 @@ import Link from "next/link";
 import { Button } from "@nextui-org/react";
 import Loader from "@/components/loader/Loader";
 import html2pdf from "html2pdf.js";
+import { useRouter } from "next/navigation";
 
 const OrderDetailsPage = () => {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
-  const [printing, setPrinting] = useState(false); // State to track printing mode
+  const [printing, setPrinting] = useState(false);
   const authToken = localStorage.getItem("authToken");
   const orderDetailsRef = useRef();
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -25,6 +28,11 @@ const OrderDetailsPage = () => {
             },
           }
         );
+
+        if (response.status === 401) {
+          router.push("/");
+        }
+
         if (!response.ok) {
           throw new Error("Failed to fetch order details");
         }
