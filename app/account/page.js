@@ -5,6 +5,7 @@ import Container from "../container";
 import { ROUTES } from "@/routes/routes";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const AccountPage = () => {
   const router = useRouter();
@@ -28,7 +29,7 @@ const AccountPage = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const authToken = localStorage.getItem("authToken");
+        const authToken = Cookies.getItem("authToken");
 
         if (!authToken) {
           toast.error("Missing authToken in localStorage");

@@ -1,18 +1,14 @@
 "use client";
 
 import { ROUTES } from "@/routes/routes";
-import { Button } from "@nextui-org/react";
+import { getAuthToken } from "@/utils/getAuthToken";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
 const OrderTable = () => {
   const [orders, setOrders] = useState([]);
-  const authToken = localStorage.getItem("authToken");
-
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+  const authToken = getAuthToken();
 
   useEffect(() => {
     const fetchOrders = async () => {

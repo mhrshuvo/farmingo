@@ -6,12 +6,13 @@ import Link from "next/link";
 import Loader from "@/components/loader/Loader";
 import html2pdf from "html2pdf.js";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const OrderDetailsPage = () => {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [printing, setPrinting] = useState(false);
-  const authToken = localStorage.getItem("authToken");
+  const authToken = Cookies.getItem("authToken");
   const orderDetailsRef = useRef();
 
   const router = useRouter();

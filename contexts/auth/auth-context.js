@@ -1,6 +1,8 @@
 "use client";
 
 import { ROUTES } from "@/routes/routes";
+import { getAuthToken } from "@/utils/getAuthToken";
+import Cookies from "js-cookie";
 import React, { createContext, useState, useContext } from "react";
 import toast from "react-hot-toast";
 
@@ -9,12 +11,12 @@ const AuthContext = createContext();
 
 // Create AuthProvider component
 export const AuthProvider = ({ children }) => {
-  const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
-  const [user, setUser] = useState(localStorage.getItem("UserName"));
+  const [authToken, setAuthToken] = useState(getAuthToken());
+  const [user, setUser] = useState(Cookies.get("UserName"));
 
   const login = (token) => {
     setAuthToken(token);
-    localStorage.setItem("authToken", token);
+    Cookies.set("authToken", token);
   };
 
   const logout = async () => {
@@ -34,7 +36,7 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         setAuthToken(null);
         toast.success("User logged out");
-        localStorage.removeItem("authToken");
+        Cookies.remove("authToken");
         setUser(null); // Reset user state
       } else {
         // Handle error response

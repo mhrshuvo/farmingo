@@ -8,6 +8,7 @@ import { ROUTES } from "@/routes/routes";
 const CategoriesNavbar = () => {
   const [categories, setCategories] = useState([]);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -25,6 +26,24 @@ const CategoriesNavbar = () => {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    // Update the screen size state on mount and resize
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Call the handler to set initial state
+    handleResize();
+
+    // Cleanup event listener on unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const toggleMoreOptions = () => {
     setShowMoreOptions(!showMoreOptions);
   };
@@ -33,11 +52,8 @@ const CategoriesNavbar = () => {
     setShowMoreOptions(false);
   };
 
-  const visibleCategories = categories.slice(
-    0,
-    window.innerWidth >= 1024 ? 4 : 3
-  );
-  const hiddenCategories = categories.slice(window.innerWidth >= 1024 ? 4 : 3);
+  const visibleCategories = categories.slice(0, isDesktop ? 4 : 3);
+  const hiddenCategories = categories.slice(isDesktop ? 4 : 3);
 
   return (
     <div className="bg-gray-100 py-5 px-4">

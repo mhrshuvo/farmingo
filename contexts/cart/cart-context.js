@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import React, { createContext, useContext } from "react";
 
 const CartContext = createContext();
 
@@ -35,15 +36,11 @@ const cartReducer = (state, action) => {
 };
 
 export const CartProvider = ({ children }) => {
-  const [cart, dispatch] = useReducer(cartReducer, [], (initial) => {
-    const storedCart = localStorage.getItem("cart");
-    return storedCart ? JSON.parse(storedCart) : initial;
-  });
+  const [cart, setCart] = useLocalStorage("cart", []);
 
-  useEffect(() => {
-    // Local storage update should only occur when cart state changes
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]); // Ensure the effect depends on cart state
+  const dispatch = (action) => {
+    setCart((prevCart) => cartReducer(prevCart, action));
+  };
 
   // Define cart context functions
   const addItemToCart = (item) => {
@@ -62,10 +59,6 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: "CLEAR_CART" });
   };
 
-  const setCart = (newCart) => {
-    dispatch({ type: "SET_CART", payload: newCart });
-  };
-
   // Provide cart context values
   const contextValues = {
     cart,
@@ -73,7 +66,6 @@ export const CartProvider = ({ children }) => {
     removeItemFromCart,
     decreaseQuantity,
     clearCart,
-    setCart,
   };
 
   return (

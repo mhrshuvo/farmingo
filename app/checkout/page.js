@@ -6,12 +6,15 @@ import { ROUTES } from "@/routes/routes";
 import toast from "react-hot-toast";
 import { useAuth } from "@/contexts/auth/auth-context";
 import { useAuthModal } from "@/contexts/auth/login-modal";
+import Cookies from "js-cookie";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
   const { isAuthenticated } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+  const [authToken, setAuthToken] = useState(Cookies.get("authToken")); // Use Cookies.get instead of Cookies.getItem
+  const [selectedZone, setSelectedZone] = useLocalStorage("selectedZone", "");
 
   const handleOrder = async () => {
     // If user isn't logged in, show the login modal
@@ -30,7 +33,6 @@ const CheckoutPage = () => {
     const zonesData = await zoneResponse.json();
 
     // Find the selected zone
-    const selectedZone = localStorage.getItem("selectedZone");
     const zone = zonesData.find((zone) => zone.name === selectedZone);
 
     if (!zone) {
@@ -55,7 +57,7 @@ const CheckoutPage = () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer ${authToken}`, 
+        Authorization: `Bearer ${authToken}`,
       },
       body: JSON.stringify(orderData),
     };
