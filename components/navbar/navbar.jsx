@@ -11,7 +11,7 @@ import { Button, Badge } from "@nextui-org/react";
 import { useCart } from "@/contexts/cart/cart-context";
 import { useAuth } from "@/contexts/auth/auth-context";
 import Link from "next/link";
-import { useAuthModal } from "@/contexts/auth/login-modal"; // Assuming the correct path to the auth modal context
+import { useAuthModal } from "@/contexts/auth/login-modal";
 import Logo from "../logo/logo";
 
 export default function NavbarWithSearch() {
