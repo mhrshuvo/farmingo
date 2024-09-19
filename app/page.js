@@ -6,9 +6,12 @@ import Container from "./container";
 import Link from "next/link";
 import { ROUTES } from "@/routes/routes";
 import CategoriesNavbar from "@/components/categories/categories";
+import Loading from "./loading";
+import ImageSlider from "@/components/slider/Slider";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,11 +26,18 @@ export default function Home() {
         setCategories(data);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        // Set loading to false regardless of whether the fetch was successful
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <main>
@@ -36,8 +46,13 @@ export default function Home() {
           <CategoriesNavbar />
         </div>
       </div>
+
+      <div>
+        <ImageSlider />
+      </div>
+
       <Container>
-        <div className="my-20 space-y-20 mx-auto ">
+        <div className="my-20 space-y-20 mx-auto">
           {categories.map((category) => (
             <section key={category.id}>
               <div className="flex justify-between items-center mx-2">
@@ -58,7 +73,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-6 gap-4 xl:gap-6">
-                {category.products.map((product) => (
+                {category.products.slice(0, 12).map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>

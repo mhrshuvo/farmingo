@@ -1,12 +1,14 @@
-import { Spinner } from "@nextui-org/react";
-import React from "react";
+import CardSkeleton from "@/components/skeleton/Skeleton";
+import Container from "./container";
 
-const loading = () => {
+export default async function Loading() {
   return (
-    <div className="h-screen text-center">
-      <Spinner label="Loading" color="success" labelColor="success" />
-    </div>
+    <Container>
+      <div className="my-8 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6">
+        {[...Array(36)].map((_, index) => (
+          <CardSkeleton key={index} />
+        ))}
+      </div>
+    </Container>
   );
-};
-
-export default loading;
+}

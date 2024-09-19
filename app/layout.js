@@ -9,8 +9,8 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Firmingo",
-  description: "Firmingo app for end to end users",
+  title: "Farmingo",
+  description: "Farmingo app for end to end users",
 };
 
 export default function RootLayout({ children }) {
