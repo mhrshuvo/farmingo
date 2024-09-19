@@ -24,6 +24,8 @@ export default function NavbarWithSearch() {
   const { isAuthenticated, user, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  console.log(isAuthenticated);
+
   // useEffect to handle the initial state of the location modal
   useEffect(() => {
     const savedZone = localStorage.getItem("selectedZone");
@@ -57,7 +59,7 @@ export default function NavbarWithSearch() {
     if (isAuthenticated()) {
       logout();
     } else {
-      openLoginModal(); // Opening the login modal if not authenticated
+      openLoginModal();
     }
   };
 
@@ -118,7 +120,7 @@ export default function NavbarWithSearch() {
             {/* User profile and cart */}
             <div className="flex items-center gap-5">
               {/* User profile and logout */}
-              {isAuthenticated() ? (
+              {isAuthenticated ? (
                 <div className="relative inline-block text-left">
                   <button
                     className="text-white cursor-pointer"

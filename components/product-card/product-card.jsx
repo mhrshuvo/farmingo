@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="w-[180px] md:w-[200px] h-[300px] mx-auto bg-white border rounded-md flex flex-col justify-between">
+    <div className="w-[180px] md:w-[200px] h-[350px] mx-auto bg-white border rounded-md flex flex-col justify-between">
       <img
         className="w-full mx-auto my-2 h-[50%] object-cover"
         src={`${process.env.NEXT_PUBLIC_IMG_URL}${image}`}
@@ -28,15 +28,15 @@ const ProductCard = ({ product }) => {
           <div className="ml-2 text-sm font-bold text-gray-600">/{unit}</div>
         </div>
       </div>
-      <div className="px-4 pb-2">
+      <div className="flex justify-center items-center my-2 ">
         {/* Attach handleAddToCart function to the onClick event of the Button */}
-        <Button
-          className="bg-green-600 text-white"
+        <button
+          className="bg-green-600 px-6 py-2 rounded-lg text-white"
           fullWidth
           onClick={handleAddToCart}
         >
           Add to Cart
-        </Button>
+        </button>
       </div>
     </div>
   );

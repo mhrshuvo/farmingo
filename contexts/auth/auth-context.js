@@ -3,7 +3,7 @@
 import { ROUTES } from "@/routes/routes";
 import { getAuthToken } from "@/utils/getAuthToken";
 import Cookies from "js-cookie";
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import toast from "react-hot-toast";
 
 // Create AuthContext
@@ -12,11 +12,22 @@ const AuthContext = createContext();
 // Create AuthProvider component
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(getAuthToken());
-  const [user, setUser] = useState(Cookies.get("UserName"));
+  const [user, setUser] = useState(null);
 
-  const login = (token) => {
+  useEffect(() => {
+    // When authToken is set or removed, synchronize the user state
+    if (authToken) {
+      setUser(Cookies.get("UserName"));
+    } else {
+      setUser(null); // Reset user if authToken is null
+    }
+  }, [authToken]); // Trigger the effect whenever authToken changes
+
+  const login = (token, userName) => {
     setAuthToken(token);
     Cookies.set("authToken", token);
+    Cookies.set("UserName", userName); // Set user name in cookie
+    setUser(userName); // Set the user state
   };
 
   const logout = async () => {
@@ -35,11 +46,11 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         setAuthToken(null);
-        toast.success("User logged out");
         Cookies.remove("authToken");
+        Cookies.remove("UserName");
         setUser(null); // Reset user state
+        toast.success("User logged out");
       } else {
-        // Handle error response
         console.error("Logout failed:", response.statusText);
       }
     } catch (error) {
@@ -53,7 +64,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ authToken, login, logout, isAuthenticated, setUser, user }}
+      value={{ authToken, login, logout, isAuthenticated, user }}
     >
       {children}
     </AuthContext.Provider>

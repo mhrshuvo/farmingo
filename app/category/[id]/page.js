@@ -38,7 +38,7 @@ function CategoryPage({ params }) {
         </div>
       </div>
       <Container>
-        <div className="my-20 space-y-20 mx-auto h-full">
+        <div className="my-20 space-y-20 mx-auto h-screen">
           <section>
             <div className="flex justify-between items-center mx-2">
               <h2 className="text-3xl font-semibold mb-4">Products</h2>
