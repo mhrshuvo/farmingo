@@ -33,7 +33,7 @@ export default function Home() {
     <main>
       <div className="sticky top-16">
         <div className="md:block hidden">
-          <CategoriesNavbar></CategoriesNavbar>
+          <CategoriesNavbar />
         </div>
       </div>
       <Container>
@@ -42,13 +42,15 @@ export default function Home() {
             <section key={category.id}>
               <div className="flex justify-between items-center mx-2">
                 <div>
-                  <h2 className="text-3xl  font-semibold mb-7">
+                  <h2 className="text-3xl font-semibold mb-7">
                     {category.name}
                   </h2>
                 </div>
                 <div>
                   <Link
-                    href={`/category/${category.id}`}
+                    href={`/category/${category.id}?name=${encodeURIComponent(
+                      category.name
+                    )}`}
                     className="font-bold text-green-800 text-xl capitalize"
                   >
                     See More

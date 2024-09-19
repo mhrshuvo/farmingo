@@ -11,6 +11,9 @@ function CategoryPage({ params }) {
 
   const [products, setProducts] = useState([]);
 
+  const urlParams = new URLSearchParams(location.search);
+  const name = urlParams.get("name");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,7 +44,7 @@ function CategoryPage({ params }) {
         <div className="my-20 space-y-20 mx-auto h-screen">
           <section>
             <div className="flex justify-between items-center mx-2">
-              <h2 className="text-3xl font-semibold mb-4">Products</h2>
+              <h2 className="text-3xl font-semibold mb-4">{name}</h2>
             </div>
             <div className="grid grid-cols-2  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-6 gap-4 xl:gap-6">
               {products.map((product) => (
