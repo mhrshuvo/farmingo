@@ -1,15 +1,15 @@
 "use client";
 
-import { AuthProvider } from "@/contexts/auth/auth-context";
+import { UserProvider } from "@/contexts/auth/auth-context";
 import { AuthModalProvider } from "@/contexts/auth/login-modal";
 import { NextUIProvider } from "@nextui-org/react";
 
 export function Providers({ children }) {
   return (
     <NextUIProvider>
-      <AuthProvider>
+      <UserProvider>
         <AuthModalProvider>{children}</AuthModalProvider>
-      </AuthProvider>
+      </UserProvider>
     </NextUIProvider>
   );
 }

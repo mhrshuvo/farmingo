@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/auth/auth-context";
 import Link from "next/link";
 import { useAuthModal } from "@/contexts/auth/login-modal";
 import Logo from "../logo/logo";
+import toast from "react-hot-toast";
 
 export default function NavbarWithSearch() {
   // State variables and hooks
@@ -21,10 +22,8 @@ export default function NavbarWithSearch() {
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
   const { cart } = useCart();
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  console.log(isAuthenticated);
 
   // useEffect to handle the initial state of the location modal
   useEffect(() => {
@@ -56,11 +55,8 @@ export default function NavbarWithSearch() {
   };
 
   const handleLogout = () => {
-    if (isAuthenticated()) {
-      logout();
-    } else {
-      openLoginModal();
-    }
+    logout();
+    toast.success("User signed out");
   };
 
   const handleMenuToggle = () => {
@@ -94,7 +90,7 @@ export default function NavbarWithSearch() {
           {/* Logo and search bar */}
           <div className="flex items-center md:gap-10 lg:gap-10 gap-2">
             <Link href={"/"} className="font-bold text-white">
-              <Logo></Logo>
+              <Logo />
             </Link>
             <div className="relative">
               <input
@@ -129,7 +125,7 @@ export default function NavbarWithSearch() {
                     <FaUserCircle className="h-6 w-6" />
                   </button>
                   {isMenuOpen && (
-                    <div className="menu-content   absolute   md:right-5 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
+                    <div className="menu-content absolute md:right-5 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
                       <div
                         className="py-1"
                         role="menu"

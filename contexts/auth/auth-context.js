@@ -1,75 +1,43 @@
 "use client";
 
-import { ROUTES } from "@/routes/routes";
-import { getAuthToken } from "@/utils/getAuthToken";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import Cookies from "js-cookie";
-import React, { createContext, useState, useEffect, useContext } from "react";
-import toast from "react-hot-toast";
 
-// Create AuthContext
-const AuthContext = createContext();
+const UserContext = createContext(undefined);
 
-// Create AuthProvider component
-export const AuthProvider = ({ children }) => {
-  const [authToken, setAuthToken] = useState(getAuthToken());
-  const [user, setUser] = useState(null);
+export const UserProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login = (token) => {
+    Cookies.set("auth_token", token);
+    setIsAuthenticated(true);
+  };
+
+  const logout = () => {
+    Cookies.remove("auth_token");
+    setIsAuthenticated(false);
+  };
 
   useEffect(() => {
-    // When authToken is set or removed, synchronize the user state
-    if (authToken) {
-      setUser(Cookies.get("UserName"));
+    const token = Cookies.get("auth_token");
+    if (token) {
+      setIsAuthenticated(true);
     } else {
-      setUser(null); // Reset user if authToken is null
+      setIsAuthenticated(false);
     }
-  }, [authToken]); // Trigger the effect whenever authToken changes
-
-  const login = (token, userName) => {
-    setAuthToken(token);
-    Cookies.set("authToken", token);
-    Cookies.set("UserName", userName); // Set user name in cookie
-    setUser(userName); // Set the user state
-  };
-
-  const logout = async () => {
-    try {
-      // Make a request to the logout API endpoint
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.LOG_OUT}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`, // Include the auth token if required
-          },
-        }
-      );
-
-      if (response.ok) {
-        setAuthToken(null);
-        Cookies.remove("authToken");
-        Cookies.remove("UserName");
-        setUser(null); // Reset user state
-        toast.success("User logged out");
-      } else {
-        console.error("Logout failed:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Logout failed:", error.message);
-    }
-  };
-
-  const isAuthenticated = () => {
-    return authToken !== null;
-  };
+  }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ authToken, login, logout, isAuthenticated, user }}
-    >
+    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-// Custom hook to use AuthContext
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useAuth must be used within a UserProvider");
+  }
+  return context;
+};

@@ -17,15 +17,25 @@ import { ROUTES } from "@/routes/routes";
 
 export default function LoginModal({ isOpen, onClose }) {
   // AUTH CONTEXT
-  const { login, setUser } = useAuth();
+  const { login } = useAuth(); // Only login method is needed now
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    emailOrPhone: "",
     password: "",
     zone_id: 1,
+    address: "",
+  });
+
+  const [formErrors, setFormErrors] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    emailOrPhone: "",
+    password: "",
     address: "",
   });
 
@@ -37,11 +47,43 @@ export default function LoginModal({ isOpen, onClose }) {
     });
   };
 
-  // this function works to signup or login the user
+  const validateForm = () => {
+    const errors = {};
+    const passwordRegex = /.{8,}/; // Regex for at least 8 characters
+    const phoneRegex = /^[0-9]{1,11}$/; // Regex for up to 11 digits
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for valid email
+
+    if (isSignUp) {
+      if (!formData.name) errors.name = "Name is required";
+      if (!formData.email || !emailRegex.test(formData.email)) {
+        errors.email = "Valid email is required";
+      }
+      if (!formData.phone || !phoneRegex.test(formData.phone)) {
+        errors.phone = "Phone number must be up to 11 digits";
+      }
+      if (!formData.password || !passwordRegex.test(formData.password)) {
+        errors.password = "Password must be at least 8 characters long";
+      }
+      if (!formData.address) errors.address = "Address is required";
+    }
+
+    setFormErrors(errors);
+    return isSignUp ? Object.keys(errors).length === 0 : true;
+  };
+
   const handleFormSubmit = async () => {
-    try {
-      // Signup logic here
+    if (!validateForm()) {
       if (isSignUp) {
+        Object.values(formErrors).forEach((error) => {
+          if (error) toast.error(error); // Display all errors as toast during signup
+        });
+      }
+      return;
+    }
+
+    try {
+      if (isSignUp) {
+        // Signup logic here
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ZONES}`
         );
@@ -79,12 +121,8 @@ export default function LoginModal({ isOpen, onClose }) {
 
           const responseData = await signupResponse.json();
           const token = responseData.token;
-          const userName = responseData.name;
-          localStorage.setItem("UserName", userName);
-          setUser(userName);
 
-          // Use the login function from AuthContext to set the token
-          login(token);
+          login(token); // Use the login function from AuthContext to set the token
 
           onClose();
           setFormData({
@@ -94,6 +132,7 @@ export default function LoginModal({ isOpen, onClose }) {
             password: "",
             zone_id: 1,
             address: "",
+            emailOrPhone: "",
           });
         } else {
           if (signupResponse.status === 422) {
@@ -131,12 +170,8 @@ export default function LoginModal({ isOpen, onClose }) {
 
           const responseData = await loginResponse.json();
           const token = responseData.token;
-          const userName = responseData.name;
-          localStorage.setItem("UserName", userName);
-          setUser(userName);
 
-          // Use the login function from AuthContext to set the token
-          login(token);
+          login(token); // Use the login function from AuthContext to set the token
 
           onClose();
           setFormData({
@@ -153,7 +188,7 @@ export default function LoginModal({ isOpen, onClose }) {
         }
       }
     } catch (error) {
-      toast.error("Error signing up or in:", error);
+      toast.error(`Error signing up or in: ${error.message}`); // Fixed error handling
     }
   };
 
@@ -171,31 +206,44 @@ export default function LoginModal({ isOpen, onClose }) {
             </ModalHeader>
             <ModalBody>
               {isSignUp && (
-                <Input
-                  label="Name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  variant="bordered"
-                />
-              )}
-              {isSignUp && (
-                <Input
-                  label="Email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  variant="bordered"
-                />
-              )}
-              {isSignUp && (
-                <Input
-                  label="Phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  variant="bordered"
-                />
+                <>
+                  <Input
+                    label="Name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    variant="bordered"
+                    helperText={formErrors.name}
+                    helperColor={formErrors.name ? "error" : "default"}
+                  />
+                  <Input
+                    label="Email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    variant="bordered"
+                    helperText={formErrors.email}
+                    helperColor={formErrors.email ? "error" : "default"}
+                  />
+                  <Input
+                    label="Phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    variant="bordered"
+                    helperText={formErrors.phone}
+                    helperColor={formErrors.phone ? "error" : "default"}
+                  />
+                  <Input
+                    label="Address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    variant="bordered"
+                    helperText={formErrors.address}
+                    helperColor={formErrors.address ? "error" : "default"}
+                  />
+                </>
               )}
               {!isSignUp && (
                 <Input
@@ -205,6 +253,8 @@ export default function LoginModal({ isOpen, onClose }) {
                   value={formData.emailOrPhone}
                   onChange={handleInputChange}
                   variant="bordered"
+                  helperText={formErrors.emailOrPhone}
+                  helperColor={formErrors.emailOrPhone ? "error" : "default"}
                 />
               )}
               <Input
@@ -214,16 +264,9 @@ export default function LoginModal({ isOpen, onClose }) {
                 value={formData.password}
                 onChange={handleInputChange}
                 variant="bordered"
+                helperText={formErrors.password}
+                helperColor={formErrors.password ? "error" : "default"}
               />
-              {isSignUp && (
-                <Input
-                  label="Address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  variant="bordered"
-                />
-              )}
               <div className="flex py-2 px-1 justify-between items-center">
                 <div className="flex justify-center">
                   <Link
