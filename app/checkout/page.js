@@ -8,13 +8,16 @@ import { useAuth } from "@/contexts/auth/auth-context";
 import { useAuthModal } from "@/contexts/auth/login-modal";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2"; // Import SweetAlert
+import { getSelectedZone } from "@/utils/getSelectedZone";
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
   const { isAuthenticated } = useAuth();
   const { openLoginModal } = useAuthModal();
   const [authToken] = useState(Cookies.get("authToken"));
-  const savedZone = localStorage.getItem("selectedZone");
+  const savedZone = getSelectedZone();
+
+  console.log(savedZone);
 
   const handleOrder = async () => {
     // If user isn't logged in, show the login modal
