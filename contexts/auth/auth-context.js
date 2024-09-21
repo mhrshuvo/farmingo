@@ -13,6 +13,11 @@ export const UserProvider = ({ children }) => {
     setIsAuthenticated(true);
   };
 
+  const signUp = (token) => {
+    Cookies.set("authToken", token);
+    setIsAuthenticated(true);
+  };
+
   const logout = () => {
     Cookies.remove("authToken");
     setIsAuthenticated(false);
@@ -28,7 +33,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
+    <UserContext.Provider value={{ isAuthenticated, login, logout, signUp }}>
       {children}
     </UserContext.Provider>
   );

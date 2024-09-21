@@ -59,6 +59,12 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: "CLEAR_CART" });
   };
 
+  // New function to get item quantity
+  const getItemQuantity = (itemId) => {
+    const item = cart.find((item) => item.id === itemId);
+    return item ? item.quantity : 0;
+  };
+
   // Provide cart context values
   const contextValues = {
     cart,
@@ -66,6 +72,7 @@ export const CartProvider = ({ children }) => {
     removeItemFromCart,
     decreaseQuantity,
     clearCart,
+    getItemQuantity, // Include the new function
   };
 
   return (

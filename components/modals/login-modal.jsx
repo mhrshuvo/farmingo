@@ -17,7 +17,7 @@ import { ROUTES } from "@/routes/routes";
 
 export default function LoginModal({ isOpen, onClose }) {
   // AUTH CONTEXT
-  const { login } = useAuth(); // Only login method is needed now
+  const { login, signUp } = useAuth();
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
@@ -49,7 +49,7 @@ export default function LoginModal({ isOpen, onClose }) {
 
   const validateForm = () => {
     const errors = {};
-    const passwordRegex = /.{8,}/; // Regex for at least 8 characters
+    const passwordRegex = /.{6,}/; // Regex for at least 8 characters
     const phoneRegex = /^[0-9]{1,11}$/; // Regex for up to 11 digits
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for valid email
 
@@ -122,7 +122,8 @@ export default function LoginModal({ isOpen, onClose }) {
           const responseData = await signupResponse.json();
           const token = responseData.token;
 
-          login(token); // Use the login function from AuthContext to set the token
+          signUp(token);
+          login(token);
 
           onClose();
           setFormData({
@@ -188,12 +189,12 @@ export default function LoginModal({ isOpen, onClose }) {
         }
       }
     } catch (error) {
-      toast.error(`Error signing up or in: ${error.message}`); // Fixed error handling
+      toast.error(`Error signing up or in: ${error.message}`);
     }
   };
 
   const handleToggleMode = () => {
-    setIsSignUp(!isSignUp); // Toggle between sign-up and sign-in mode
+    setIsSignUp(!isSignUp);
   };
 
   return (

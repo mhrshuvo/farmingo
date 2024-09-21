@@ -22,7 +22,9 @@ export default function RootLayout({ children }) {
             <div className="sticky top-0 z-10">
               <NavbarWithSearch></NavbarWithSearch>
             </div>
+            {/* <div className="bg-[url('/images/bg.png')] bg-cover bg-center"> */}
             {children}
+            {/* </div> */}
             <Toaster />
             <Footer />
           </Providers>
