@@ -7,14 +7,14 @@ import toast from "react-hot-toast";
 import { useAuth } from "@/contexts/auth/auth-context";
 import { useAuthModal } from "@/contexts/auth/login-modal";
 import Cookies from "js-cookie";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import Swal from "sweetalert2"; // Import SweetAlert
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
   const { isAuthenticated } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const [authToken, setAuthToken] = useState(Cookies.get("authToken")); // Use Cookies.get instead of Cookies.getItem
-  const [selectedZone, setSelectedZone] = useLocalStorage("selectedZone", "");
+  const [authToken] = useState(Cookies.get("authToken"));
+  const savedZone = localStorage.getItem("selectedZone");
 
   const handleOrder = async () => {
     // If user isn't logged in, show the login modal
@@ -23,58 +23,74 @@ const CheckoutPage = () => {
       return;
     }
 
-    // Fetch zone data
-    const zoneResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ZONES}`
-    );
-    if (!zoneResponse.ok) {
-      throw new Error("Failed to fetch zones");
-    }
-    const zonesData = await zoneResponse.json();
+    // SweetAlert confirmation before placing the order
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to confirm this order?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, confirm it!",
+    });
 
-    // Find the selected zone
-    const zone = zonesData.find((zone) => zone.name === selectedZone);
+    // If the user confirms, proceed with the order
+    if (result.isConfirmed) {
+      try {
+        // Fetch zone data
+        const zoneResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ZONES}`
+        );
+        if (!zoneResponse.ok) {
+          throw new Error("Failed to fetch zones");
+        }
+        const zonesData = await zoneResponse.json();
 
-    if (!zone) {
-      throw new Error("Selected zone not found in zones data");
-    }
+        // Find the selected zone
+        const zone = zonesData.find((zone) => zone.name === savedZone);
 
-    // Construct product array from cart items
-    const productData = cart.map((item) => ({
-      product_id: item.id,
-      quantity: item.quantity,
-    }));
+        if (!zone) {
+          throw new Error("Selected zone not found in zones data");
+        }
 
-    // Combine zone_id with product data
-    const orderData = {
-      zone_id: zone.id,
-      product: productData,
-    };
+        // Construct product array from cart items
+        const productData = cart.map((item) => ({
+          product_id: item.id,
+          quantity: item.quantity,
+        }));
 
-    // Send POST request
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-      body: JSON.stringify(orderData),
-    };
+        // Combine zone_id with product data
+        const orderData = {
+          zone_id: zone.id,
+          product: productData,
+        };
 
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ORDER}`,
-        requestOptions
-      );
-      if (!response.ok) {
-        throw new Error("Failed to send order data");
+        // Send POST request
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(orderData),
+        };
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ORDER}`,
+          requestOptions
+        );
+        if (!response.ok) {
+          throw new Error("Failed to send order data");
+        }
+
+        // Success message
+        toast.success("Order placed successfully");
+        clearCart();
+      } catch (error) {
+        console.error("Error sending order data:", error.message);
+        toast.error("Error placing the order");
       }
-      toast.success("Order placed successfully");
-
-      clearCart();
-    } catch (error) {
-      console.error("Error sending order data:", error.message);
     }
   };
 

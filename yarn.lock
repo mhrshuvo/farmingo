@@ -5048,6 +5048,11 @@ svg-pathdata@^6.0.3:
   resolved "https://registry.npmjs.org/svg-pathdata/-/svg-pathdata-6.0.3.tgz"
   integrity sha512-qsjeeq5YjBZ5eMdFuUa4ZosMLxgr5RZ+F+Y1OrDhuOCEInRMA3x74XdBtggJcj9kOeInz0WE+LgCPDkZFlBYJw==
 
+sweetalert2@^11.14.0:
+  version "11.14.0"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.14.0.tgz#baaec0f53aefb7c01fcbc78288e1c59da332e9c4"
+  integrity sha512-kF1Q/+GtZZXr+rYVcBNwlEsnxP089CpDbck+MYjvLaQj9x4fzHqN9UhlkHOIR0k09LVu2sx8cU9BnvRlxWIZqg==
+
 tailwind-merge@^1.14.0:
   version "1.14.0"
   resolved "https://registry.npmjs.org/tailwind-merge/-/tailwind-merge-1.14.0.tgz"

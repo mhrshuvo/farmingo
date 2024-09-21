@@ -6,13 +6,13 @@ import Link from "next/link";
 import Loader from "@/components/loader/Loader";
 import html2pdf from "html2pdf.js";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import { getAuthToken } from "@/utils/getAuthToken";
 
 const OrderDetailsPage = () => {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [printing, setPrinting] = useState(false);
-  const authToken = Cookies.getItem("authToken");
+  const authToken = getAuthToken();
   const orderDetailsRef = useRef();
 
   const router = useRouter();
@@ -65,7 +65,7 @@ const OrderDetailsPage = () => {
       .from(element)
       .save()
       .then(() => {
-        setPrinting(false); // Set printing mode back to false after generating PDF
+        setPrinting(false); 
       });
   };
 
@@ -74,7 +74,7 @@ const OrderDetailsPage = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 lg:h-[70vh] h-full">
+    <div className="container mx-auto p-4  h-screen">
       <h1 className="text-3xl font-semibold text-center my-5">Order Details</h1>
       <div ref={orderDetailsRef} className="bg-white p-6 shadow-md rounded-lg">
         <div className="printable-area">

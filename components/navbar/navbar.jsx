@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useAuthModal } from "@/contexts/auth/login-modal";
 import Logo from "../logo/logo";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function NavbarWithSearch() {
   // State variables and hooks
@@ -24,6 +25,7 @@ export default function NavbarWithSearch() {
   const { cart } = useCart();
   const { isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
 
   // useEffect to handle the initial state of the location modal
   useEffect(() => {
@@ -57,6 +59,7 @@ export default function NavbarWithSearch() {
   const handleLogout = () => {
     logout();
     toast.success("User signed out");
+    router.push("/");
   };
 
   const handleMenuToggle = () => {

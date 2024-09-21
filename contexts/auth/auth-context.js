@@ -9,17 +9,17 @@ export const UserProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = (token) => {
-    Cookies.set("auth_token", token);
+    Cookies.set("authToken", token);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    Cookies.remove("auth_token");
+    Cookies.remove("authToken");
     setIsAuthenticated(false);
   };
 
   useEffect(() => {
-    const token = Cookies.get("auth_token");
+    const token = Cookies.get("authToken");
     if (token) {
       setIsAuthenticated(true);
     } else {

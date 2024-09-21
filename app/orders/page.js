@@ -2,7 +2,6 @@
 
 import { ROUTES } from "@/routes/routes";
 import { getAuthToken } from "@/utils/getAuthToken";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
@@ -34,7 +33,7 @@ const OrderTable = () => {
   }, [authToken]);
 
   return (
-    <div className="container mx-auto p-4 ">
+    <div className="container mx-auto h-screen p-4 ">
       <div>
         <h1 className="text-3xl font-semibold text-center my-5">My Orders</h1>
       </div>

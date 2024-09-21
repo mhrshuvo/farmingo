@@ -130,7 +130,7 @@ export default function LoginModal({ isOpen, onClose }) {
             email: "",
             phone: "",
             password: "",
-            zone_id: 1,
+            zone_id: zoneId,
             address: "",
             emailOrPhone: "",
           });
