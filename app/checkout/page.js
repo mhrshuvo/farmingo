@@ -18,7 +18,7 @@ const CheckoutPage = () => {
 
   const handleOrder = async () => {
     // If user isn't logged in, show the login modal
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       openLoginModal();
       return;
     }

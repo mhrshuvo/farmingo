@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Container from "@/app/container";
+import Loading from "@/app/loading";
 
 const mobileImages = [
   "/images/1.png",
@@ -61,18 +62,16 @@ const ImageSlider = () => {
   };
 
   if (!imagesLoaded) {
-    return (
-      <div className="w-full h-[300px] flex justify-center items-center">
-        <div className="text-lg">Loading...</div>
-      </div>
-    );
+    return <Loading />;
   }
 
   const images = isPc ? pcImages : mobileImages;
 
   return (
     <Container>
-      <div className="relative z-0 my-4 w-full overflow-hidden">
+      <div className="relative mt-16 w-full overflow-hidden">
+        {" "}
+        {/* Adjust mt-16 based on navbar height */}
         <Slider {...settings}>
           {images.map((image, index) => (
             <div key={index} className="flex justify-center items-center">
