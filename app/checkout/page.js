@@ -9,6 +9,7 @@ import { useAuthModal } from "@/contexts/auth/login-modal";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2"; // Import SweetAlert
 import { getSelectedZone } from "@/utils/getSelectedZone";
+import { useRouter } from "next/navigation";
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
@@ -17,7 +18,8 @@ const CheckoutPage = () => {
   const [authToken, setAuthToken] = useState(Cookies.get("authToken"));
   const savedZone = getSelectedZone();
 
-  // Effect to update authToken whenever isAuthenticated changes
+  const router = useRouter();
+
   useEffect(() => {
     if (isAuthenticated) {
       setAuthToken(Cookies.get("authToken"));
@@ -25,13 +27,11 @@ const CheckoutPage = () => {
   }, [isAuthenticated]);
 
   const handleOrder = async () => {
-    // If user isn't logged in, show the login modal
     if (!isAuthenticated) {
       openLoginModal();
       return;
     }
 
-    // SweetAlert confirmation before placing the order
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to confirm this order?",
@@ -42,10 +42,8 @@ const CheckoutPage = () => {
       confirmButtonText: "Yes, confirm it!",
     });
 
-    // If the user confirms, proceed with the order
     if (result.isConfirmed) {
       try {
-        // Fetch zone data
         const zoneResponse = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ZONES}`
         );
@@ -53,27 +51,22 @@ const CheckoutPage = () => {
           throw new Error("Failed to fetch zones");
         }
         const zonesData = await zoneResponse.json();
-
-        // Find the selected zone
         const zone = zonesData.find((zone) => zone.name === savedZone);
 
         if (!zone) {
           throw new Error("Selected zone not found in zones data");
         }
 
-        // Construct product array from cart items
         const productData = cart.map((item) => ({
           product_id: item.id,
           quantity: item.quantity,
         }));
 
-        // Combine zone_id with product data
         const orderData = {
           zone_id: zone.id,
           product: productData,
         };
 
-        // Send POST request
         const requestOptions = {
           method: "POST",
           headers: {
@@ -92,9 +85,9 @@ const CheckoutPage = () => {
           throw new Error("Failed to send order data");
         }
 
-        // Success message
         toast.success("Order placed successfully");
         clearCart();
+        router.push("/");
       } catch (error) {
         console.error("Error sending order data:", error.message);
         toast.error("Error placing the order");
@@ -103,78 +96,58 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-screen-sm h-screen">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Checkout Items</h2>
-      {/* Render cart items */}
-      {cart.length === 0 ? (
-        <p className="text-gray-800">Your cart is empty.</p>
-      ) : (
-        <div>
-          <ul className="divide-y divide-gray-200 shadow-md rounded-md">
-            {cart.map((item) => (
-              <li
-                key={item.id}
-                className="py-4 px-2 flex items-center justify-between border-b border-gray-300"
+    <div className="flex flex-col min-h-screen ">
+      <div className="flex-grow container mx-auto px-4 py-8 max-w-screen-sm rounded-md">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          Checkout Items
+        </h2>
+        {cart.length === 0 ? (
+          <p className="text-gray-800">Your cart is empty.</p>
+        ) : (
+          <div>
+            <div className="grid grid-cols-1 gap-4">
+              {cart.map((item) => (
+                <div
+                  key={item.id}
+                  className="border rounded-md shadow-md p-4 flex items-center justify-between bg-white"
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`}
+                      alt={item.name}
+                      className="w-16 h-16 mr-4 rounded-md"
+                    />
+                    <div>
+                      <p className="text-gray-800 font-semibold">{item.name}</p>
+                      <p className="text-gray-600">৳{item.price} each</p>
+                      <p className="text-gray-600">
+                        Total: {item.quantity} {item.unit} = ৳
+                        {item.quantity * item.price}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-between items-center mt-4">
+              <button
+                onClick={handleOrder}
+                className="bg-green-600 text-white px-4 py-2 rounded-md"
               >
-                {/* Left column: Image and name */}
-                <div
-                  className="flex items-center border-r border-gray-300 pr-2"
-                  style={{ flex: "2", minWidth: "100px" }}
-                >
-                  <img
-                    src={`${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`}
-                    alt={item.name}
-                    className="w-12 h-12 mr-4 rounded-md"
-                  />
-                  <p className="text-gray-800">{item.name}</p>
-                </div>
+                Confirm Order
+              </button>
 
-                {/* Middle column: Price (Only visible on larger screens) */}
-                <div
-                  className="hidden md:flex items-center w-12 h-12 justify-center border-r border-gray-300 pr-2"
-                  style={{ flex: "1", minWidth: "100px" }}
-                >
-                  <p className="text-gray-600">৳{item.price}</p>
-                </div>
-
-                {/* Right column: Total */}
-                <div
-                  className="flex items-center justify-end"
-                  style={{ flex: "1", minWidth: "200px" }}
-                >
-                  <p className="text-gray-600 flex items-center justify-between">
-                    <span>
-                      Total: {item.quantity}
-                      {item.unit} * ৳{item.price} =৳
-                    </span>
-                    <span>{item.quantity * item.price}</span>
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          {/* Total price of the entire cart */}
-          <div className="flex justify-end mt-4">
-            <p className="text-lg font-semibold">
-              Total Price: ৳
-              {cart.reduce(
-                (total, item) => total + item.quantity * item.price,
-                0
-              )}
-            </p>
+              <p className="text-lg font-semibold">
+                Total Price: ৳
+                {cart.reduce(
+                  (total, item) => total + item.quantity * item.price,
+                  0
+                )}
+              </p>
+            </div>
           </div>
-
-          <div className="mt-8">
-            <button
-              onClick={handleOrder}
-              className="bg-green-600 text-white px-4 py-2 rounded-md mr-4"
-            >
-              Confirm Order
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

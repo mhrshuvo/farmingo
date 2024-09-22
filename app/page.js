@@ -52,7 +52,7 @@ export default function Home() {
       </div>
 
       <Container>
-        <div className="my-20 space-y-20 mx-auto">
+        <div className="py-20 space-y-20 mx-auto">
           {categories.map((category) => (
             <section key={category.id}>
               <div className="flex justify-between items-center mx-2">

@@ -22,9 +22,25 @@ export default function RootLayout({ children }) {
             <div className="sticky top-0 z-10">
               <NavbarWithSearch></NavbarWithSearch>
             </div>
-            {/* <div className="bg-[url('/images/bg.png')] bg-cover bg-center"> */}
-            {children}
-            {/* </div> */}
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  backgroundImage: "url('/images/bg.svg')",
+                  backgroundSize: "repeat",
+                  backgroundPosition: "center",
+                  backdropFilter: "blur",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  opacity: 0.2,
+                  zIndex: 0,
+                }}
+              />
+              <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
+            </div>
+
             <Toaster />
             <Footer />
           </Providers>
