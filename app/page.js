@@ -41,18 +41,20 @@ export default function Home() {
 
   return (
     <main>
-      <div className="sticky top-16">
+      {/* Change sticky to fixed and add z-index */}
+      <div className="fixed top-16  w-full z-50 bg-white">
         <div className="md:block hidden">
           <CategoriesNavbar />
         </div>
       </div>
 
-      <div>
+      {/* Adjust padding/margin for the slider so it doesn't overlap with the navbar */}
+      <div className="lg:pt-10 md:pt-5 pt-2">
         <ImageSlider />
       </div>
 
       <Container>
-        <div className="py-20 space-y-20 mx-auto">
+        <div className="py-10 space-y-20 mx-auto">
           {categories.map((category) => (
             <section key={category.id}>
               <div className="flex justify-between items-center mx-2">

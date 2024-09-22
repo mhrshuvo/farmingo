@@ -69,9 +69,7 @@ const ImageSlider = () => {
 
   return (
     <Container>
-      <div className="relative mt-16 w-full overflow-hidden">
-        {" "}
-        {/* Adjust mt-16 based on navbar height */}
+      <div className="relative lg:mt-16 mt-2 w-full overflow-hidden z-10">
         <Slider {...settings}>
           {images.map((image, index) => (
             <div key={index} className="flex justify-center items-center">
@@ -84,6 +82,8 @@ const ImageSlider = () => {
           ))}
         </Slider>
       </div>
+      {/* Add margin-bottom to ensure spacing */}
+      <div className="mb-10"></div>
     </Container>
   );
 };

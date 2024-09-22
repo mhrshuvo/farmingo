@@ -27,18 +27,14 @@ const CategoriesNavbar = () => {
   }, []);
 
   useEffect(() => {
-    // Update the screen size state on mount and resize
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
 
-    // Add event listener
     window.addEventListener("resize", handleResize);
 
-    // Call the handler to set initial state
     handleResize();
 
-    // Cleanup event listener on unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -56,7 +52,9 @@ const CategoriesNavbar = () => {
   const hiddenCategories = categories.slice(isDesktop ? 4 : 3);
 
   return (
-    <div className="bg-gray-100 py-5 px-4">
+    <div className="bg-gray-100 py-5 px-4 sticky top-0 z-50">
+      {" "}
+      {/* Added sticky positioning and z-index */}
       <Container>
         <div className="flex flex-wrap justify-between font-semibold cursor-pointer mx-1">
           {visibleCategories.map((category) => (
@@ -74,7 +72,7 @@ const CategoriesNavbar = () => {
                 More
               </p>
               {showMoreOptions && (
-                <ul className="absolute md:right-10 bg-white border rounded-md py-1 mt-1 shadow-md">
+                <ul className="absolute md:right-10 bg-white border rounded-md py-1 mt-1 shadow-md z-50">
                   {hiddenCategories.map((category) => (
                     <li key={category.id} onClick={closeMoreOptions}>
                       <Link href={`/category/${category.id}`}>
