@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCart } from "@/contexts/cart/cart-context";
 import { ROUTES } from "@/routes/routes";
 import toast from "react-hot-toast";
@@ -14,10 +14,15 @@ const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
   const { isAuthenticated } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const [authToken] = useState(Cookies.get("authToken"));
+  const [authToken, setAuthToken] = useState(Cookies.get("authToken"));
   const savedZone = getSelectedZone();
 
-  console.log(savedZone);
+  // Effect to update authToken whenever isAuthenticated changes
+  useEffect(() => {
+    if (isAuthenticated) {
+      setAuthToken(Cookies.get("authToken"));
+    }
+  }, [isAuthenticated]);
 
   const handleOrder = async () => {
     // If user isn't logged in, show the login modal
