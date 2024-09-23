@@ -42,7 +42,6 @@ export default function RootLayout({ children }) {
             </div>
 
             <Toaster />
-            <Footer />
           </Providers>
         </CartProvider>
       </body>

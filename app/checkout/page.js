@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { getSelectedZone } from "@/utils/getSelectedZone";
 import { useRouter } from "next/navigation";
+import Footer from "@/components/footer/footer";
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
@@ -262,6 +263,8 @@ const CheckoutPage = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

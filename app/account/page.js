@@ -60,7 +60,7 @@ const AccountPage = () => {
     };
 
     fetchInitialData();
-  });
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;

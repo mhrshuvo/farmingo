@@ -8,6 +8,7 @@ import { ROUTES } from "@/routes/routes";
 import CategoriesNavbar from "@/components/categories/categories";
 import Loading from "./loading";
 import ImageSlider from "@/components/slider/Slider";
+import Footer from "@/components/footer/footer";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
@@ -83,6 +84,8 @@ export default function Home() {
           ))}
         </div>
       </Container>
+
+      <Footer />
     </main>
   );
 }
