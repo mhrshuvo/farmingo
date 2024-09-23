@@ -62,7 +62,11 @@ const ImageSlider = () => {
   };
 
   if (!imagesLoaded) {
-    return <Loading />;
+    return (
+      <div className="w-full h-[300px] flex justify-center items-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
   }
 
   const images = isPc ? pcImages : mobileImages;

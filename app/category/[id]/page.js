@@ -31,7 +31,7 @@ function CategoryPage({ params }) {
     };
 
     fetchData();
-  }, []);
+  });
 
   return (
     <main>
