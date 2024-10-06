@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { IoMdRemove, IoMdAdd } from "react-icons/io";
@@ -8,19 +10,14 @@ import Link from "next/link";
 
 const CartSidebar = ({ isOpen, toggle }) => {
   const sidebarRef = useRef(null);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const {
-    cart,
-    removeItemFromCart,
-    clearCart,
-    decreaseQuantity,
-    addItemToCart,
-  } = useCart();
+  const { cart, removeItemFromCart, decreaseQuantity, addItemToCart } =
+    useCart();
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      if (!sidebarRef.current.contains(event.target)) {
-        toggle();
+      // Close the sidebar if clicking outside of it
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        toggle(); // Call the toggle function to close the sidebar
       }
     };
 
@@ -59,17 +56,18 @@ const CartSidebar = ({ isOpen, toggle }) => {
       ref={sidebarRef}
       className={`fixed inset-y-0 right-0 z-50 w-full md:w-80 bg-gray-300 shadow-lg overflow-y-auto transition-transform duration-300 ease-in-out transform ${
         isOpen ? "translate-x-0" : "translate-x-full"
-      } ${isAnimating ? "opacity-0" : "opacity-100"}`}
-      onAnimationStart={() => setIsAnimating(true)}
-      onAnimationEnd={() => setIsAnimating(false)}
+      }`}
     >
       <div className="flex justify-between items-center px-4 py-2 border-b border-gray-200">
-        <button className="text-red-600 focus:outline-none" onClick={toggle}>
+        <button
+          aria-label="Close cart"
+          className="text-red-600 focus:outline-none"
+          onClick={toggle} // Ensure this function closes the sidebar
+        >
           <RiCloseLine size={25} />
         </button>
       </div>
       <div className="px-4 py-6">
-        {/* Render cart items */}
         {cart.length === 0 ? (
           <p className="text-gray-800">Your cart is empty.</p>
         ) : (
@@ -93,6 +91,7 @@ const CartSidebar = ({ isOpen, toggle }) => {
                   </div>
                   <div className="flex items-center">
                     <button
+                      aria-label="Decrease quantity"
                       className="text-gray-600 focus:outline-none"
                       onClick={() => handleRemoveQuantity(item)}
                     >
@@ -100,12 +99,14 @@ const CartSidebar = ({ isOpen, toggle }) => {
                     </button>
                     <span className="mx-2">{item.quantity}</span>
                     <button
+                      aria-label="Increase quantity"
                       className="text-gray-600 focus:outline-none"
                       onClick={() => handleAddQuantity(item)}
                     >
                       <IoMdAdd className="w-6 h-6" />
                     </button>
                     <button
+                      aria-label="Remove item"
                       className="text-gray-600 focus:outline-none ml-4"
                       onClick={() => handleDeleteItem(item)}
                     >

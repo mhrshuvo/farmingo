@@ -26,7 +26,11 @@ export default function LocationModal({ isOpen, onClose, onZoneSelect }) {
   }, [isOpen]);
 
   const handleZoneSelection = (zone) => {
-    onZoneSelect(zone.name);
+    if (typeof onZoneSelect === "function") {
+      onZoneSelect(zone.name);
+    } else {
+      console.error("onZoneSelect is not a function");
+    }
     onClose();
   };
 

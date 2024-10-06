@@ -43,14 +43,14 @@ export default function Home() {
   return (
     <main>
       {/* Change sticky to fixed and add z-index */}
-      <div className="fixed top-16  w-full z-50 bg-white">
-        <div className="md:block hidden">
+      <div className="fixed md:top-16  w-full z-50 bg-white">
+        <div>
           <CategoriesNavbar />
         </div>
       </div>
 
       {/* Adjust padding/margin for the slider so it doesn't overlap with the navbar */}
-      <div className="lg:pt-10 md:pt-5 pt-2">
+      <div className="lg:pt-10 md:pt-5 pt-28">
         <ImageSlider />
       </div>
 

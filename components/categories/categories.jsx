@@ -7,7 +7,6 @@ import { ROUTES } from "@/routes/routes";
 
 const CategoriesNavbar = () => {
   const [categories, setCategories] = useState([]);
-  const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
 
   useEffect(() => {
@@ -40,52 +39,19 @@ const CategoriesNavbar = () => {
     };
   }, []);
 
-  const toggleMoreOptions = () => {
-    setShowMoreOptions(!showMoreOptions);
-  };
-
-  const closeMoreOptions = () => {
-    setShowMoreOptions(false);
-  };
-
-  const visibleCategories = categories.slice(0, isDesktop ? 4 : 3);
-  const hiddenCategories = categories.slice(isDesktop ? 4 : 3);
-
   return (
-    <div className="bg-gray-100 py-5 px-4 sticky top-0 z-50">
-      {" "}
-      {/* Added sticky positioning and z-index */}
+    <div className="bg-gray-100 p-1 md:p-6 sticky top-0 right-0 z-50">
       <Container>
         <div className="flex flex-wrap justify-between font-semibold cursor-pointer mx-1">
-          {visibleCategories.map((category) => (
+          {categories.map((category) => (
             <Link
               href={`/category/${category.id}`}
               key={category.id}
-              className="mb-2 sm:mb-0"
+              className="mb-2 border border-green-500 rounded-lg p-1 sm:mb-0"
             >
               <p className="block whitespace-nowrap">{category.name}</p>
             </Link>
           ))}
-          {hiddenCategories.length > 0 && (
-            <div className="relative">
-              <p className="cursor-pointer" onClick={toggleMoreOptions}>
-                More
-              </p>
-              {showMoreOptions && (
-                <ul className="absolute md:right-10 bg-white border rounded-md py-1 mt-1 shadow-md z-50">
-                  {hiddenCategories.map((category) => (
-                    <li key={category.id} onClick={closeMoreOptions}>
-                      <Link href={`/category/${category.id}`}>
-                        <p className="block px-4 py-2 hover:bg-gray-200 whitespace-nowrap">
-                          {category.name}
-                        </p>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
         </div>
       </Container>
     </div>

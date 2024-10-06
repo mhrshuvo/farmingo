@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaSearch, FaMapMarkerAlt, FaUserCircle } from "react-icons/fa";
 import { CiShoppingCart } from "react-icons/ci";
 import Container from "@/app/container";
@@ -10,8 +10,8 @@ import CartSidebar from "../sidebar/cart-sidebar";
 import { Button, Badge, Input } from "@nextui-org/react";
 import { useCart } from "@/contexts/cart/cart-context";
 import { useAuth } from "@/contexts/auth/auth-context";
-import Link from "next/link";
 import { useAuthModal } from "@/contexts/auth/login-modal";
+import Link from "next/link";
 import Logo from "../logo/logo";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -26,6 +26,7 @@ export default function NavbarWithSearch() {
   const { isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
+  const sidebarRef = useRef(null); // Create a ref for the sidebar
 
   // useEffect to handle the initial state of the location modal
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function NavbarWithSearch() {
   };
 
   const toggleCartSidebar = () => {
-    setIsCartSidebarOpen(!isCartSidebarOpen);
+    setIsCartSidebarOpen((prev) => !prev);
   };
 
   const handleZoneButtonClick = () => {
@@ -67,8 +68,9 @@ export default function NavbarWithSearch() {
   };
 
   const handleClickOutside = (event) => {
-    if (!event.target.closest(".menu-content")) {
-      setIsMenuOpen(false);
+    // Check if the click was outside the sidebar
+    if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      toggleCartSidebar(); // Use toggleCartSidebar to close the sidebar
     }
   };
 
@@ -88,8 +90,8 @@ export default function NavbarWithSearch() {
     <nav className="bg-[#152721]">
       {/* Container for the navbar */}
       <Container>
-        {/* Navbar content */}
-        <div className="md:flex lg:flex justify-between items-center px-4 py-4">
+        {/* Desktop Navbar */}
+        <div className="hidden md:flex lg:flex justify-between items-center px-4 py-4">
           {/* Logo and search bar */}
           <div className="flex items-center md:gap-10 lg:gap-10 gap-2">
             <Link href={"/"} className="font-bold text-white">
@@ -187,15 +189,100 @@ export default function NavbarWithSearch() {
             </div>
           </div>
         </div>
+
+        {/* Mobile Navbar */}
+        <div className="flex md:hidden justify-between items-center px-4 py-4">
+          {/* Logo */}
+          <Link href={"/"} className="font-bold text-white">
+            <Logo />
+          </Link>
+          {/* User actions */}
+          <div className="flex items-center gap-5">
+            {/* Select zone button for mobile */}
+            <button
+              onClick={handleZoneButtonClick}
+              className="flex items-center gap-2 cursor-pointer font-bold"
+            >
+              <FaMapMarkerAlt className="text-white cursor-pointer" />
+              {selectedZone ? (
+                <span className="text-white">{selectedZone}</span>
+              ) : (
+                <span className="text-white">Select Location</span>
+              )}
+            </button>
+            {isAuthenticated ? (
+              <div className="relative inline-block text-left">
+                <button
+                  className="text-white cursor-pointer"
+                  onClick={handleMenuToggle}
+                >
+                  <FaUserCircle className="h-6 w-6" />
+                </button>
+                {isMenuOpen && (
+                  <div className="menu-content absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
+                    <div
+                      className="py-1"
+                      role="menu"
+                      aria-orientation="vertical"
+                      aria-labelledby="options-menu"
+                    >
+                      <Link
+                        href="/account"
+                        className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                      >
+                        Profile
+                      </Link>
+                      <Link
+                        href="/orders"
+                        className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                      >
+                        Orders
+                      </Link>
+                      <button
+                        className="w-full text-left px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Button
+                color="#FFFFFF"
+                variant="bordered"
+                className="text-white font-bold"
+                onClick={openLoginModal}
+              >
+                Login
+              </Button>
+            )}
+            {/* Cart button */}
+            <div className="cursor-pointer" onClick={toggleCartSidebar}>
+              <Badge
+                content={cart
+                  .reduce((total, item) => total + item.quantity, 0)
+                  .toString()}
+                color="warning"
+              >
+                <CiShoppingCart className="text-white" size={30} />
+              </Badge>
+            </div>
+          </div>
+        </div>
       </Container>
-      {/* Modals and sidebars */}
-      <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+      {/* Modals */}
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={closeLocationModal}
-        onZoneSelect={handleZoneSelection}
+        onZoneSelect={handleZoneSelection} // Make sure this is defined
       />
-      <CartSidebar isOpen={isCartSidebarOpen} toggle={toggleCartSidebar} />
+      <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+      <CartSidebar isOpen={isCartSidebarOpen} onClose={toggleCartSidebar} />
     </nav>
   );
 }
