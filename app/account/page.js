@@ -6,6 +6,7 @@ import { ROUTES } from "@/routes/routes";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import Footer from "@/components/footer/footer";
 
 const AccountPage = () => {
   const router = useRouter();
@@ -103,94 +104,95 @@ const AccountPage = () => {
   };
 
   return (
-    <Container>
-      <form
-        className="flex flex-col space-y-4 lg:w-[500px] h-[60vh] lg:mx-auto mg:mx-20 mx-10 my-10"
-        onSubmit={handleSubmit}
-      >
-        <div>
-          <h1 className="text-3xl font-semibold text-center">Profile</h1>
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="name" className="text-sm font-medium">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            className="rounded-md border hover:cursor-pointer border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={formData.name}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            className="rounded-md border hover:cursor-pointer border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={formData.email}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="phone" className="text-sm font-medium">
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            className="rounded-md border hover:cursor-pointer border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={formData.phone}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="zone_id" className="text-sm font-medium">
-            Zone
-          </label>
-          <select
-            id="zone_id"
-            name="zone_id"
-            className="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={formData.zone_id}
-            onChange={handleChange}
-          >
-            <option value="" disabled>
-              Select your zone
-            </option>
-            {zones.map((zone) => (
-              <option key={zone.id} value={zone.id}>
-                {zone.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="address" className="text-sm font-medium">
-            Address
-          </label>
-          <textarea
-            id="address"
-            name="address"
-            className="rounded-md border border-gray-300 px-3 py-2 h-24 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={formData.address}
-            onChange={handleChange}
-          />
-        </div>
-        <button
-          type="submit"
-          className="inline-flex items-center px-4 py-2 bg-green-800 hover:bg-green-900 text-white font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 disabled:opacity-50"
+    <>
+      <Container>
+        <form
+          className="flex flex-col space-y-4 lg:w-[500px] h-full lg:mx-auto py-20 mx-10"
+          onSubmit={handleSubmit}
         >
-          Submit
-        </button>
-      </form>
-    </Container>
+          <div>
+            <h1 className="text-3xl font-semibold text-center">Profile</h1>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="name" className="text-sm font-medium">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="rounded-md border hover:cursor-pointer border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+              value={formData.name}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="email" className="text-sm font-medium">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="rounded-md border hover:cursor-pointer border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+              value={formData.email}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="phone" className="text-sm font-medium">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              className="rounded-md border hover:cursor-pointer border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+              value={formData.phone}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="zone_id" className="text-sm font-medium">
+              Zone
+            </label>
+            <select
+              id="zone_id"
+              name="zone_id"
+              className="rounded-md border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+              value={formData.zone_id}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select your zone
+              </option>
+              {zones.map((zone) => (
+                <option key={zone.id} value={zone.id}>
+                  {zone.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="address" className="text-sm font-medium">
+              Address
+            </label>
+            <textarea
+              id="address"
+              name="address"
+              className="rounded-md border border-gray-300 px-3 py-2 h-24 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+              value={formData.address}
+              onChange={handleChange}
+            />
+          </div>
+          <button
+            type="submit"
+            className="inline-flex items-center px-4 py-2 bg-green-800 hover:bg-green-900 text-white font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 disabled:opacity-50"
+          >
+            Submit
+          </button>
+        </form>
+      </Container>
+
+      <Footer />
+    </>
   );
 };
 

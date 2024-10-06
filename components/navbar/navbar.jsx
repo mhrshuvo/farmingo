@@ -10,8 +10,8 @@ import CartSidebar from "../sidebar/cart-sidebar";
 import { Button, Badge, Input } from "@nextui-org/react";
 import { useCart } from "@/contexts/cart/cart-context";
 import { useAuth } from "@/contexts/auth/auth-context";
-import { useAuthModal } from "@/contexts/auth/login-modal";
 import Link from "next/link";
+import { useAuthModal } from "@/contexts/auth/login-modal";
 import Logo from "../logo/logo";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -122,6 +122,7 @@ export default function NavbarWithSearch() {
             {/* User profile and cart */}
             <div className="flex items-center gap-5">
               {/* User profile and logout */}
+
               {isAuthenticated ? (
                 <div className="relative inline-block text-left">
                   <button
@@ -131,30 +132,28 @@ export default function NavbarWithSearch() {
                     <FaUserCircle className="h-6 w-6" />
                   </button>
                   {isMenuOpen && (
-                    <div className="menu-content absolute md:right-5 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
+                    <div className="absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
                       <div
                         className="py-1"
                         role="menu"
                         aria-orientation="vertical"
-                        aria-labelledby="options-menu"
                       >
                         <Link
                           href="/account"
-                          className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
                           Profile
                         </Link>
-
                         <Link
                           href="/orders"
-                          className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
                           Orders
                         </Link>
                         <button
-                          className="w-full text-left px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                           onClick={handleLogout}
                         >
@@ -165,7 +164,6 @@ export default function NavbarWithSearch() {
                   )}
                 </div>
               ) : (
-                // Login button
                 <Button
                   color="#FFFFFF"
                   variant="bordered"
@@ -175,6 +173,7 @@ export default function NavbarWithSearch() {
                   Login
                 </Button>
               )}
+
               {/* Cart button */}
               <div className="cursor-pointer" onClick={toggleCartSidebar}>
                 <Badge
@@ -189,67 +188,72 @@ export default function NavbarWithSearch() {
             </div>
           </div>
         </div>
-
-        {/* Mobile Navbar */}
+        {/* Mobile Navbar */}{" "}
         <div className="flex md:hidden justify-between items-center px-4 py-4">
-          {/* Logo */}
+          {" "}
+          {/* Logo */}{" "}
           <Link href={"/"} className="font-bold text-white">
-            <Logo />
-          </Link>
-          {/* User actions */}
+            {" "}
+            <Logo />{" "}
+          </Link>{" "}
+          {/* User actions */}{" "}
           <div className="flex items-center gap-5">
-            {/* Select zone button for mobile */}
             <button
               onClick={handleZoneButtonClick}
               className="flex items-center gap-2 cursor-pointer font-bold"
             >
               <FaMapMarkerAlt className="text-white cursor-pointer" />
-              {selectedZone ? (
-                <span className="text-white">{selectedZone}</span>
-              ) : (
-                <span className="text-white">Select Location</span>
+              {selectedZone && (
+                <div className="text-white mr-2">{`${selectedZone}`}</div>
               )}
             </button>
             {isAuthenticated ? (
               <div className="relative inline-block text-left">
+                {" "}
                 <button
                   className="text-white cursor-pointer"
                   onClick={handleMenuToggle}
                 >
-                  <FaUserCircle className="h-6 w-6" />
-                </button>
+                  {" "}
+                  <FaUserCircle className="h-6 w-6" />{" "}
+                </button>{" "}
                 {isMenuOpen && (
                   <div className="menu-content absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
+                    {" "}
                     <div
                       className="py-1"
                       role="menu"
                       aria-orientation="vertical"
                       aria-labelledby="options-menu"
                     >
+                      {" "}
                       <Link
                         href="/account"
                         className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
                         role="menuitem"
                       >
-                        Profile
-                      </Link>
+                        {" "}
+                        Profile{" "}
+                      </Link>{" "}
                       <Link
                         href="/orders"
                         className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
                         role="menuitem"
                       >
-                        Orders
-                      </Link>
+                        {" "}
+                        Orders{" "}
+                      </Link>{" "}
                       <button
                         className="w-full text-left px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
                         role="menuitem"
                         onClick={handleLogout}
                       >
-                        Logout
-                      </button>
-                    </div>
+                        {" "}
+                        Logout{" "}
+                      </button>{" "}
+                    </div>{" "}
                   </div>
-                )}
+                )}{" "}
               </div>
             ) : (
               <Button
@@ -258,31 +262,39 @@ export default function NavbarWithSearch() {
                 className="text-white font-bold"
                 onClick={openLoginModal}
               >
-                Login
+                {" "}
+                Login{" "}
               </Button>
-            )}
-            {/* Cart button */}
+            )}{" "}
             <div className="cursor-pointer" onClick={toggleCartSidebar}>
+              {" "}
               <Badge
                 content={cart
                   .reduce((total, item) => total + item.quantity, 0)
                   .toString()}
                 color="warning"
               >
-                <CiShoppingCart className="text-white" size={30} />
-              </Badge>
-            </div>
-          </div>
+                {" "}
+                <CiShoppingCart className="text-white" size={30} />{" "}
+              </Badge>{" "}
+            </div>{" "}
+          </div>{" "}
         </div>
       </Container>
-      {/* Modals */}
+      {/* Location Modal */}
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={closeLocationModal}
-        onZoneSelect={handleZoneSelection} // Make sure this is defined
+        onZoneSelect={handleZoneSelection}
       />
+      {/* Login Modal */}
       <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
-      <CartSidebar isOpen={isCartSidebarOpen} onClose={toggleCartSidebar} />
+      {/* Cart Sidebar */}
+      <CartSidebar
+        isOpen={isCartSidebarOpen}
+        toggle={toggleCartSidebar}
+        ref={sidebarRef}
+      />
     </nav>
   );
 }
