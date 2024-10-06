@@ -7,7 +7,7 @@ import Container from "@/app/container";
 import LocationModal from "../modals/location-modal";
 import LoginModal from "../modals/login-modal";
 import CartSidebar from "../sidebar/cart-sidebar";
-import { Button, Badge } from "@nextui-org/react";
+import { Button, Badge, Input } from "@nextui-org/react";
 import { useCart } from "@/contexts/cart/cart-context";
 import { useAuth } from "@/contexts/auth/auth-context";
 import Link from "next/link";
@@ -96,12 +96,13 @@ export default function NavbarWithSearch() {
               <Logo />
             </Link>
             <div className="relative">
-              <input
+              <Input
                 className="w-full md:w-[300px] lg:w-[600px] xl:w-[800px] h-10 px-3 pr-10 rounded-md focus:outline-none"
                 type="search"
                 placeholder="Search your fresh vegetables..."
+                style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
               />
-              <FaSearch className="absolute right-3 top-2/4 transform -translate-y-2/4 text-gray-400" />
+              <FaSearch className="absolute md:right-14 hidden md:block top-2/4 transform -translate-y-2/4 text-gray-400" />
             </div>
           </div>
           {/* User actions */}
