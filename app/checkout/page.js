@@ -189,11 +189,11 @@ const CheckoutPage = () => {
                     </div>
                   ))}
                   <div className="mt-4">
-                    <label className="flex items-center">
+                    <label className="flex items-center text-green-500 font-semibold">
                       <input
                         type="radio"
                         name="address"
-                        className="mr-2"
+                        className="mr-2 "
                         checked={useNewAddress}
                         onChange={() => setUseNewAddress(true)} // Show the new address form
                       />
