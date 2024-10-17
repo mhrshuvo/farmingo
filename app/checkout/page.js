@@ -20,6 +20,9 @@ const CheckoutPage = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [useNewAddress, setUseNewAddress] = useState(false);
+  const [addressId, setSelectedAddressId] = useState(null);
   const [errors, setErrors] = useState({});
   const savedZone = getSelectedZone();
   const router = useRouter();
@@ -27,8 +30,29 @@ const CheckoutPage = () => {
   useEffect(() => {
     if (isAuthenticated) {
       setAuthToken(Cookies.get("authToken"));
+      fetchAddresses();
     }
   }, [isAuthenticated]);
+
+  const fetchAddresses = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.MY_ADDRESS}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch addresses");
+      }
+      const data = await response.json();
+      setSavedAddresses(data);
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+    }
+  };
 
   const validateInputs = () => {
     const newErrors = {};
@@ -51,7 +75,7 @@ const CheckoutPage = () => {
       return;
     }
 
-    const validationErrors = validateInputs();
+    const validationErrors = useNewAddress ? validateInputs() : {}; // Validate only if the user is providing a new address
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
@@ -87,15 +111,22 @@ const CheckoutPage = () => {
           quantity: item.quantity,
         }));
 
-        const orderData = {
-          zone_id: zone.id,
-          product: productData,
-          customer: {
-            name,
-            address,
-            phone: phoneNumber,
-          },
-        };
+        // Prepare the order data depending on whether the user is using a saved address or a new one
+        const orderData = useNewAddress
+          ? {
+              zone_id: zone.id,
+              product: productData,
+              delivery_info: {
+                name,
+                address,
+                phone: phoneNumber,
+              },
+            }
+          : {
+              zone_id: zone.id,
+              product: productData,
+              delivery_address_id: addressId,
+            };
 
         const requestOptions = {
           method: "POST",
@@ -125,19 +156,6 @@ const CheckoutPage = () => {
     }
   };
 
-  // Live validation for phone number
-  useEffect(() => {
-    if (phoneNumber) {
-      const validationErrors = validateInputs();
-      setErrors((prev) => ({
-        ...prev,
-        phone: validationErrors.phone,
-      }));
-    } else {
-      setErrors((prev) => ({ ...prev, phone: undefined }));
-    }
-  }, [phoneNumber]);
-
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow container mx-auto px-4 py-8 max-w-screen-lg flex flex-col md:flex-row">
@@ -147,61 +165,105 @@ const CheckoutPage = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               Delivery Information
             </h2>
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  setErrors((prev) => ({ ...prev, name: undefined }));
-                }}
-                className={`border rounded-md p-2 w-full shadow-md ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                }`}
-                style={{ backgroundColor: "#f9f9f9" }}
-              />
-              {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name}</p>
-              )}
-            </div>
 
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="Phone Number"
-                value={phoneNumber}
-                onChange={(e) => {
-                  setPhoneNumber(e.target.value);
-                  setErrors((prev) => ({ ...prev, phone: undefined }));
-                }}
-                className={`border rounded-md p-2 w-full shadow-md ${
-                  errors.phone ? "border-red-500" : "border-gray-300"
-                }`}
-                style={{ backgroundColor: "#f9f9f9" }}
-              />
-              {errors.phone && (
-                <p className="text-red-500 text-sm">{errors.phone}</p>
+            <div>
+              {/* Show saved addresses if any */}
+              {savedAddresses.length > 0 && (
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Select Address</h3>
+                  {savedAddresses.map((addressItem) => (
+                    <div key={addressItem.id} className="mb-2">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="address"
+                          className="mr-2"
+                          checked={addressId === addressItem.id}
+                          onChange={() => {
+                            setSelectedAddressId(addressItem.id); // Store the selected address ID
+                            setUseNewAddress(false); // Disable new address form
+                          }}
+                        />
+                        {`${addressItem.receiver_name}, ${addressItem.address}, ${addressItem.receiver_phone}`}
+                      </label>
+                    </div>
+                  ))}
+                  <div className="mt-4">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="address"
+                        className="mr-2"
+                        checked={useNewAddress}
+                        onChange={() => setUseNewAddress(true)} // Show the new address form
+                      />
+                      Use a different address
+                    </label>
+                  </div>
+                </div>
               )}
-            </div>
 
-            <div className="mb-4">
-              <textarea
-                placeholder="Delivery Address"
-                value={address}
-                onChange={(e) => {
-                  setAddress(e.target.value);
-                  setErrors((prev) => ({ ...prev, address: undefined }));
-                }}
-                className={`border rounded-md p-2 w-full shadow-md ${
-                  errors.address ? "border-red-500" : "border-gray-300"
-                }`}
-                style={{ backgroundColor: "#f9f9f9" }}
-                rows="3"
-              />
-              {errors.address && (
-                <p className="text-red-500 text-sm">{errors.address}</p>
-              )}
+              {/* Show input form if no saved addresses or user opts to use a new address */}
+              {savedAddresses.length === 0 || useNewAddress ? (
+                <div className="mt-4">
+                  <div className="mb-4">
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      value={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                        setErrors((prev) => ({ ...prev, name: undefined }));
+                      }}
+                      className={`border rounded-md p-2 w-full shadow-md ${
+                        errors.name ? "border-red-500" : "border-gray-300"
+                      }`}
+                      style={{ backgroundColor: "#f9f9f9" }}
+                    />
+                    {errors.name && (
+                      <p className="text-red-500 text-sm">{errors.name}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4">
+                    <input
+                      type="text"
+                      placeholder="Phone Number"
+                      value={phoneNumber}
+                      onChange={(e) => {
+                        setPhoneNumber(e.target.value);
+                        setErrors((prev) => ({ ...prev, phone: undefined }));
+                      }}
+                      className={`border rounded-md p-2 w-full shadow-md ${
+                        errors.phone ? "border-red-500" : "border-gray-300"
+                      }`}
+                      style={{ backgroundColor: "#f9f9f9" }}
+                    />
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm">{errors.phone}</p>
+                    )}
+                  </div>
+
+                  <div className="mb-4">
+                    <textarea
+                      placeholder="Delivery Address"
+                      value={address}
+                      onChange={(e) => {
+                        setAddress(e.target.value);
+                        setErrors((prev) => ({ ...prev, address: undefined }));
+                      }}
+                      className={`border rounded-md p-2 w-full shadow-md ${
+                        errors.address ? "border-red-500" : "border-gray-300"
+                      }`}
+                      style={{ backgroundColor: "#f9f9f9" }}
+                      rows="3"
+                    />
+                    {errors.address && (
+                      <p className="text-red-500 text-sm">{errors.address}</p>
+                    )}
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             <div className="flex justify-center items-center py-4">
@@ -211,59 +273,51 @@ const CheckoutPage = () => {
               >
                 Confirm Order
               </button>
-              <p className="text-lg font-semibold ml-4">
-                Total Price: ৳
-                {cart.reduce(
-                  (total, item) => total + item.quantity * item.price,
-                  0
-                )}
-              </p>
+              <p className="text-red-500">{errors.message}</p>
             </div>
           </div>
         </div>
 
-        {/* Checkout Items Section as Card */}
-        <div className="w-full md:w-1/2 pl-0 md:pl-4">
+        {/* Cart Items Summary */}
+        <div className="w-full md:w-1/2">
           <div className="bg-white rounded-md shadow-md p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Checkout Items
+              Cart Summary
             </h2>
-            {cart.length === 0 ? (
-              <p className="text-gray-800">Your cart is empty.</p>
-            ) : (
-              <div>
-                <div className="grid grid-cols-1 gap-4">
-                  {cart.map((item) => (
-                    <div
-                      key={item.id}
-                      className="border rounded-md shadow-md p-4 flex items-center justify-between bg-white"
-                    >
-                      <div className="flex items-center">
-                        <img
-                          src={`${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`}
-                          alt={item.name}
-                          className="w-16 h-16 mr-4 rounded-md"
-                        />
-                        <div>
-                          <p className="text-gray-800 font-semibold">
-                            {item.name}
-                          </p>
-                          <p className="text-gray-600">৳{item.price} each</p>
-                          <p className="text-gray-600">
-                            Total: {item.quantity} {item.unit} = ৳
-                            {item.quantity * item.price}
-                          </p>
-                        </div>
-                      </div>
+            <ul className="mb-4">
+              {cart.map((item) => (
+                <div
+                  key={item.id}
+                  className="border rounded-md shadow-md p-4 flex items-center justify-between bg-white"
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`}
+                      alt={item.name}
+                      className="w-16 h-16 mr-4 rounded-md"
+                    />
+                    <div>
+                      <p className="text-gray-800 font-semibold">{item.name}</p>
+                      <p className="text-gray-600">৳{item.price} each</p>
+                      <p className="text-gray-600">
+                        Total: {item.quantity} {item.unit} = ৳
+                        {item.quantity * item.price}
+                      </p>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              ))}
+            </ul>
+            <h3 className="text-xl font-semibold">
+              Total: $
+              {cart.reduce(
+                (total, item) => total + item.price * item.quantity,
+                0
+              )}
+            </h3>
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

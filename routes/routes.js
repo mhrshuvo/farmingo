@@ -9,4 +9,5 @@ export const ROUTES = {
   PROFILE: "/profile",
   UPDATE_PROFILE: "/profile_update",
   MY_ORDERS: "/consumer/my_orders",
+  MY_ADDRESS: "/consumer/my_address_book",
 };
