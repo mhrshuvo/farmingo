@@ -44,10 +44,16 @@ const CheckoutPage = () => {
           },
         }
       );
+
       if (!response.ok) {
         throw new Error("Failed to fetch addresses");
       }
       const data = await response.json();
+
+      if (data?.length === 0) {
+        setUseNewAddress(true);
+      }
+
       setSavedAddresses(data);
     } catch (error) {
       console.error("Error fetching addresses:", error);
@@ -69,13 +75,14 @@ const CheckoutPage = () => {
     return newErrors;
   };
 
+  // handle order
   const handleOrder = async () => {
     if (!isAuthenticated) {
       openLoginModal();
       return;
     }
 
-    const validationErrors = useNewAddress ? validateInputs() : {}; // Validate only if the user is providing a new address
+    const validationErrors = useNewAddress ? validateInputs() : {};
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
