@@ -27,6 +27,8 @@ const CheckoutPage = () => {
   const savedZone = getSelectedZone();
   const router = useRouter();
 
+  const deliveryCharge = 50;
+
   useEffect(() => {
     if (isAuthenticated) {
       setAuthToken(Cookies.get("authToken"));
@@ -128,11 +130,13 @@ const CheckoutPage = () => {
                 address,
                 phone: phoneNumber,
               },
+              delivery_charge: deliveryCharge,
             }
           : {
               zone_id: zone.id,
               product: productData,
               delivery_address_id: addressId,
+              delivery_charge: deliveryCharge,
             };
 
         const requestOptions = {
@@ -315,10 +319,17 @@ const CheckoutPage = () => {
                 </div>
               ))}
             </ul>
+
+            {/* Show Delivery Charge */}
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Delivery Charge: ৳{deliveryCharge}
+            </h3>
+
             <h3 className="text-xl font-semibold">
-              Total: $
+              Total: BDT
               {cart.reduce(
-                (total, item) => total + item.price * item.quantity,
+                (total, item) =>
+                  total + deliveryCharge + item.price * item.quantity,
                 0
               )}
             </h3>
