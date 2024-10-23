@@ -79,12 +79,12 @@ export default function Home() {
       </div>
 
       <Container>
-        <div className="py-10 space-y-20 mx-auto">
+        <div className="pb-10 space-y-10 mx-auto">
           {categories.map((category) => (
             <section key={category.id}>
-              <div className="flex justify-between items-center mx-2">
+              <div className="flex justify-between items-center p-2 mx-2">
                 <div>
-                  <h2 className="text-3xl font-semibold mb-7">
+                  <h2 className="text-1xl lg:text-2xl font-semibold">
                     {category.name}
                   </h2>
                 </div>
