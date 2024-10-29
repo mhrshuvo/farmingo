@@ -43,25 +43,12 @@ export default function Home() {
 
   // Slider settings for desktop screens
   const sliderSettings = {
-    dots: false,
+    dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 4, // Adjust the number of products visible at a time on PC
+    slidesToShow: 6,
     slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3, // Adjust for tablet
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2, // Adjust for smaller tablets
-        },
-      },
-    ],
+    draggable: false, // Disable mouse drag
   };
 
   return (
