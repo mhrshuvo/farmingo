@@ -29,7 +29,6 @@ export default function Home() {
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        // Set loading to false regardless of whether the fetch was successful
         setLoading(false);
       }
     };
@@ -48,46 +47,57 @@ export default function Home() {
     speed: 500,
     slidesToShow: 6,
     slidesToScroll: 1,
-    draggable: false, // Disable mouse drag
+    draggable: false,
   };
+
+  // Function to sort products, putting the "Vegetables" category first
+  const sortCategories = (categories) => {
+    return categories.sort((a, b) => {
+      const isAVegetableCategory = a.name.includes("Vegetables");
+      const isBVegetableCategory = b.name.includes("Vegetables");
+
+      if (isAVegetableCategory && !isBVegetableCategory) {
+        return -1; // a comes first
+      }
+      if (!isAVegetableCategory && isBVegetableCategory) {
+        return 1; // b comes first
+      }
+      return 0; // keep original order for other categories
+    });
+  };
+
+  // Sort categories to prioritize vegetables
+  const sortedCategories = sortCategories(categories);
 
   return (
     <main>
-      {/* Change sticky to fixed and add z-index */}
       <div className="fixed md:top-16 w-full z-50 bg-white">
-        <div>
-          <CategoriesNavbar />
-        </div>
+        <CategoriesNavbar />
       </div>
 
-      {/* Adjust padding/margin for the slider so it doesn't overlap with the navbar */}
       <div className="lg:pt-10 md:pt-5 pt-28">
         <ImageSlider />
       </div>
 
       <Container>
         <div className="pb-10 space-y-10 mx-auto">
-          {categories.map((category) => (
+          {sortedCategories.map((category) => (
             <section key={category.id}>
               <div className="flex justify-between items-center p-2 mx-2">
-                <div>
-                  <h2 className="font-bold text-green-800 text-1xl lg:text-2xl ">
-                    {category.name}
-                  </h2>
-                </div>
-                <div>
-                  <Link
-                    href={`/category/${category.id}?name=${encodeURIComponent(
-                      category.name
-                    )}`}
-                    className="border border-green-400 rounded-lg capitalize font-semibold"
-                  >
-                    See More
-                  </Link>
-                </div>
+                <h2 className="font-bold text-green-800 text-1xl lg:text-2xl ">
+                  {category.name}
+                </h2>
+                <Link
+                  href={`/category/${category.id}?name=${encodeURIComponent(
+                    category.name
+                  )}`}
+                  className="border border-green-400 rounded-lg capitalize font-semibold"
+                >
+                  See More
+                </Link>
               </div>
 
-              {/* Use a horizontal scroll for mobile devices */}
+              {/* Mobile view */}
               <div className="block lg:hidden mx-4 overflow-x-auto">
                 <div className="flex space-x-4">
                   {category.products.slice(0, 14).map((product) => (
@@ -98,7 +108,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Use a slider for PC */}
+              {/* Desktop view */}
               <div className="hidden lg:block">
                 <Slider {...sliderSettings}>
                   {category.products.slice(0, 14).map((product) => (
