@@ -41,7 +41,11 @@ const CategoriesNavbar = () => {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.CATEGORIES}`
         );
-        const data = await response.json();
+        let data = await response.json();
+
+        // Move "Vegetables" to the beginning if it exists in the list
+        data = data.sort((a, b) => (a.name === "Vegetables (সবজি)" ? -1 : 0));
+
         setCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);

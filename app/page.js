@@ -84,7 +84,7 @@ export default function Home() {
             <section key={category.id}>
               <div className="flex justify-between items-center p-2 mx-2">
                 <div>
-                  <h2 className="text-1xl lg:text-2xl font-semibold">
+                  <h2 className="font-bold text-green-800 text-xl capitalize">
                     {category.name}
                   </h2>
                 </div>
@@ -93,7 +93,7 @@ export default function Home() {
                     href={`/category/${category.id}?name=${encodeURIComponent(
                       category.name
                     )}`}
-                    className="font-bold text-green-800 text-xl capitalize"
+                    className="text-1xl lg:text-2xl font-semibold"
                   >
                     See More
                   </Link>

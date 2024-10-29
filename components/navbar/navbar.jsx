@@ -176,12 +176,7 @@ export default function NavbarWithSearch() {
 
               {/* Cart button */}
               <div className="cursor-pointer" onClick={toggleCartSidebar}>
-                <Badge
-                  content={cart
-                    .reduce((total, item) => total + item.quantity, 0)
-                    .toString()}
-                  color="warning"
-                >
+                <Badge content={cart.length.toString()} color="warning">
                   <CiShoppingCart className="text-white" size={30} />
                 </Badge>
               </div>

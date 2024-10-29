@@ -9,12 +9,12 @@ export const UserProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = (token) => {
-    Cookies.set("authToken", token);
+    Cookies.set("authToken", token, { expires: 30 });
     setIsAuthenticated(true);
   };
 
   const signUp = (token) => {
-    Cookies.set("authToken", token);
+    Cookies.set("authToken", token, { expires: 30 });
     setIsAuthenticated(true);
   };
 

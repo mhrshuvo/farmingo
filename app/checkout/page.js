@@ -21,7 +21,7 @@ const CheckoutPage = () => {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [savedAddresses, setSavedAddresses] = useState([]);
-  const [useNewAddress, setUseNewAddress] = useState(false);
+  const [useNewAddress, setUseNewAddress] = useState(true);
   const [addressId, setSelectedAddressId] = useState(null);
   const [errors, setErrors] = useState({});
   const savedZone = getSelectedZone();
