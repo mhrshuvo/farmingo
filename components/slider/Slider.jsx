@@ -6,19 +6,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Container from "@/app/container";
 
-const mobileImages = [
-  "/images/1.png",
-  "/images/2.png",
-  "/images/3.png",
-  "/images/4.png",
-];
+const mobileImages = ["/images/1.png"];
 
-const pcImages = [
-  "/images/1.png",
-  "/images/2.png",
-  "/images/3.png",
-  "/images/4.png",
-];
+const pcImages = ["/images/1.png"];
 
 const ImageSlider = () => {
   const [isPc, setIsPc] = useState(window.innerWidth >= 1024);
@@ -72,15 +62,14 @@ const ImageSlider = () => {
 
   return (
     <Container>
-      <div className="relative lg:mt-16  w-full overflow-hidden z-10">
+      <div className="relative lg:mt-16   w-full overflow-hidden z-10">
         <Slider {...settings}>
           {images.map((image, index) => (
             <div key={index} className="flex justify-center items-center">
               <img
                 src={image}
                 alt={`Slide ${index + 1}`}
-                className="w-full max-w-full object-cover border-2 rounded-2xl border-green-500 
-                  h-[150px] lg:max-h-[400px] lg:h-auto"
+                className="w-full max-w-full h-[100px] lg:h-full object-cover"
               />
             </div>
           ))}
