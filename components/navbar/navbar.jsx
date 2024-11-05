@@ -15,6 +15,7 @@ import { useAuthModal } from "@/contexts/auth/login-modal";
 import Logo from "../logo/logo";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useSearch } from "@/contexts/search/search-context";
 
 export default function NavbarWithSearch() {
   // State variables and hooks
@@ -27,6 +28,11 @@ export default function NavbarWithSearch() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const sidebarRef = useRef(null); // Create a ref for the sidebar
+  const { searchTerm, setSearchTerm } = useSearch();
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   // useEffect to handle the initial state of the location modal
   useEffect(() => {
@@ -102,6 +108,8 @@ export default function NavbarWithSearch() {
                 className="w-full md:w-[300px] lg:w-[600px] xl:w-[800px] h-10 px-3 pr-10 rounded-md focus:outline-none"
                 type="search"
                 placeholder="Search your fresh vegetables..."
+                value={searchTerm}
+                onChange={handleSearchChange}
                 style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
               />
               <FaSearch className="absolute md:right-14 hidden md:block top-2/4 transform -translate-y-2/4 text-gray-400" />
@@ -183,97 +191,104 @@ export default function NavbarWithSearch() {
             </div>
           </div>
         </div>
-        {/* Mobile Navbar */}{" "}
-        <div className="flex md:hidden justify-between items-center px-4 py-4">
-          {" "}
-          {/* Logo */}{" "}
-          <Link href={"/"} className="font-bold text-white">
-            {" "}
-            <Logo />{" "}
-          </Link>{" "}
-          {/* User actions */}{" "}
-          <div className="flex items-center gap-5">
-            <button
-              onClick={handleZoneButtonClick}
-              className="flex items-center gap-2 cursor-pointer font-bold"
-            >
-              <FaMapMarkerAlt className="text-white cursor-pointer" />
-              {selectedZone && (
-                <div className="text-white mr-2">{`${selectedZone}`}</div>
-              )}
-            </button>
-            {isAuthenticated ? (
-              <div className="relative inline-block text-left">
-                {" "}
-                <button
-                  className="text-white cursor-pointer"
-                  onClick={handleMenuToggle}
+        {/* Mobile Navbar */}
+        <div className="flex md:hidden flex-col justify-between items-center px-4 py-4">
+          <div className="w-full flex justify-between items-center">
+            <Link href={"/"} className="font-bold text-white">
+              <Logo />
+            </Link>
+
+            {/* User actions */}
+            <div className="flex items-center gap-5">
+              <button
+                onClick={handleZoneButtonClick}
+                className="flex items-center gap-2 cursor-pointer font-bold"
+              >
+                <FaMapMarkerAlt className="text-white cursor-pointer" />
+                {selectedZone && (
+                  <div className="text-white mr-2">{`${selectedZone}`}</div>
+                )}
+              </button>
+
+              {isAuthenticated ? (
+                <div className="relative inline-block text-left">
+                  <button
+                    className="text-white cursor-pointer"
+                    onClick={handleMenuToggle}
+                  >
+                    <FaUserCircle className="h-6 w-6" />
+                  </button>
+                  {isMenuOpen && (
+                    <div className="menu-content absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
+                      <div
+                        className="py-1"
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby="options-menu"
+                      >
+                        <Link
+                          href="/account"
+                          className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          Profile
+                        </Link>
+                        <Link
+                          href="/orders"
+                          className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          Orders
+                        </Link>
+                        <button
+                          className="w-full text-left px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Button
+                  color="#FFFFFF"
+                  variant="bordered"
+                  className="text-white font-bold"
+                  onClick={openLoginModal}
                 >
-                  {" "}
-                  <FaUserCircle className="h-6 w-6" />{" "}
-                </button>{" "}
-                {isMenuOpen && (
-                  <div className="menu-content absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
-                    {" "}
-                    <div
-                      className="py-1"
-                      role="menu"
-                      aria-orientation="vertical"
-                      aria-labelledby="options-menu"
-                    >
-                      {" "}
-                      <Link
-                        href="/account"
-                        className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                      >
-                        {" "}
-                        Profile{" "}
-                      </Link>{" "}
-                      <Link
-                        href="/orders"
-                        className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                      >
-                        {" "}
-                        Orders{" "}
-                      </Link>{" "}
-                      <button
-                        className="w-full text-left px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
-                        role="menuitem"
-                        onClick={handleLogout}
-                      >
-                        {" "}
-                        Logout{" "}
-                      </button>{" "}
-                    </div>{" "}
-                  </div>
-                )}{" "}
+                  Login
+                </Button>
+              )}
+
+              <div className="cursor-pointer" onClick={toggleCartSidebar}>
+                <Badge
+                  content={cart
+                    .reduce((total, item) => total + item.quantity, 0)
+                    .toString()}
+                  color="warning"
+                >
+                  <CiShoppingCart className="text-white" size={30} />
+                </Badge>
               </div>
-            ) : (
-              <Button
-                color="#FFFFFF"
-                variant="bordered"
-                className="text-white font-bold"
-                onClick={openLoginModal}
-              >
-                {" "}
-                Login{" "}
-              </Button>
-            )}{" "}
-            <div className="cursor-pointer" onClick={toggleCartSidebar}>
-              {" "}
-              <Badge
-                content={cart
-                  .reduce((total, item) => total + item.quantity, 0)
-                  .toString()}
-                color="warning"
-              >
-                {" "}
-                <CiShoppingCart className="text-white" size={30} />{" "}
-              </Badge>{" "}
-            </div>{" "}
-          </div>{" "}
+            </div>
+          </div>
+
+          {/* Search Input for Mobile */}
+          <div className="w-full mt-4 px-4">
+            <div className="relative">
+              <Input
+                className="w-full  rounded-md focus:outline-none"
+                type="search"
+                placeholder="Search your fresh vegetables..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
+              />
+              <FaSearch className="absolute md:right-14 hidden md:block top-2/4 transform -translate-y-2/4 text-gray-400" />
+            </div>
+          </div>
         </div>
       </Container>
       {/* Location Modal */}
