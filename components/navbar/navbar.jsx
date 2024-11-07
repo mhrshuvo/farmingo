@@ -183,6 +183,7 @@ export default function NavbarWithSearch() {
             </div>
           </div>
         </div>
+
         {/* Mobile Navbar */}
         <div className="flex md:hidden flex-col justify-between items-center px-4 py-4">
           <div className="w-full flex justify-between items-center">
@@ -257,29 +258,25 @@ export default function NavbarWithSearch() {
               </div>
             </div>
           </div>
-          <div className="w-full relative mt-2">
-            <Input
-              className="w-full h-10 px-3 pr-10 rounded-md focus:outline-none"
-              type="search"
-              placeholder="Search your fresh vegetables..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-          </div>
         </div>
       </Container>
-      {/* Modals and Sidebars */}
+
+      {/* Cart Sidebar */}
+      <CartSidebar
+        isOpen={isCartSidebarOpen}
+        toggle={toggleCartSidebar}
+        ref={sidebarRef}
+      />
+
+      {/* Location Modal */}
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={closeLocationModal}
         onZoneSelect={handleZoneSelection}
       />
+
+      {/* Login Modal */}
       <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
-      <CartSidebar
-        isOpen={isCartSidebarOpen}
-        onClose={() => setIsCartSidebarOpen(false)}
-        ref={sidebarRef}
-      />
     </nav>
   );
 }

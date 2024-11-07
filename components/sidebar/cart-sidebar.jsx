@@ -1,23 +1,30 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, forwardRef } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { IoMdRemove, IoMdAdd } from "react-icons/io";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useCart } from "@/contexts/cart/cart-context";
 import toast from "react-hot-toast";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const CartSidebar = ({ isOpen, toggle }) => {
-  const sidebarRef = useRef(null);
+// Use forwardRef to forward the ref to the div element
+const CartSidebar = forwardRef(({ isOpen, toggle }, ref) => {
+  const closeButtonRef = useRef(null); // Ref for the close button
   const { cart, removeItemFromCart, decreaseQuantity, addItemToCart } =
     useCart();
+  const router = useRouter();
 
+  // Close sidebar when clicked outside
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      // Close the sidebar if clicking outside of it
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-        toggle(); // Call the toggle function to close the sidebar
+      // Check if click is outside the sidebar and close button
+      if (
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        !closeButtonRef.current.contains(event.target)
+      ) {
+        toggle();
       }
     };
 
@@ -30,13 +37,15 @@ const CartSidebar = ({ isOpen, toggle }) => {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [isOpen, toggle]);
+  }, [isOpen, toggle, ref]);
 
+  // Add quantity of an item
   const handleAddQuantity = (item) => {
     const updatedItem = { ...item, quantity: item.quantity + 1 };
     addItemToCart(updatedItem);
   };
 
+  // Remove quantity of an item
   const handleRemoveQuantity = (item) => {
     if (item.quantity === 1) {
       removeItemFromCart(item);
@@ -46,23 +55,31 @@ const CartSidebar = ({ isOpen, toggle }) => {
     }
   };
 
+  // Delete an item from the cart
   const handleDeleteItem = (item) => {
     removeItemFromCart(item);
     toast.error("Removed From Cart");
   };
 
+  // Proceed to payment
+  const handleProceedToPayment = () => {
+    toggle(); // Close the sidebar
+    router.push("/checkout"); // Navigate to checkout
+  };
+
   return (
     <div
-      ref={sidebarRef}
+      ref={ref}
       className={`fixed inset-y-0 right-0 z-50 w-full md:w-80 bg-gray-300 shadow-lg overflow-y-auto transition-transform duration-300 ease-in-out transform ${
         isOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >
       <div className="flex justify-between items-center px-4 py-2 border-b border-gray-200">
         <button
+          ref={closeButtonRef} // Attach ref to the close button
           aria-label="Close cart"
           className="text-red-600 focus:outline-none"
-          onClick={toggle} // Ensure this function closes the sidebar
+          onClick={toggle}
         >
           <RiCloseLine size={25} />
         </button>
@@ -80,7 +97,11 @@ const CartSidebar = ({ isOpen, toggle }) => {
                 >
                   <div className="flex items-center">
                     <img
-                      src={`${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`}
+                      src={
+                        item.image
+                          ? `${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`
+                          : "/placeholder-image.jpg"
+                      }
                       alt={item.name}
                       className="w-12 h-12 mr-4 rounded-md"
                     />
@@ -117,19 +138,20 @@ const CartSidebar = ({ isOpen, toggle }) => {
               ))}
             </ul>
 
-            <Link href={"/checkout"}>
-              <button
-                onClick={toggle}
-                className="bg-green-600 text-white px-4 py-2 rounded-md mt-4 w-full"
-              >
-                Proceed to Payment
-              </button>
-            </Link>
+            <button
+              onClick={handleProceedToPayment}
+              className="bg-green-600 text-white px-4 py-2 rounded-md mt-4 w-full"
+            >
+              Proceed to Payment
+            </button>
           </div>
         )}
       </div>
     </div>
   );
-};
+});
+
+// Assign a display name to the component
+CartSidebar.displayName = "CartSidebar";
 
 export default CartSidebar;
