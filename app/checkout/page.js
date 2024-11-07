@@ -311,8 +311,8 @@ const CheckoutPage = () => {
                       <p className="text-gray-800 font-semibold">{item.name}</p>
                       <p className="text-gray-600">৳{item.price} each</p>
                       <p className="text-gray-600">
-                        Total: {item.quantity} {item.unit} = ৳
-                        {item.quantity * item.price}
+                        Total: {item.quantity} <br />
+                        {item.unit} = ৳{item.quantity * item.price}
                       </p>
                     </div>
                   </div>

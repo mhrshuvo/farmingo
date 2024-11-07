@@ -36,7 +36,7 @@ const Footer = () => {
               <ul className="text-gray-200 font-medium">
                 <li className="mb-4">
                   <a href="/" className="hover:underline">
-                    help@gmail.com
+                    info@deshifarmer.co
                   </a>
                 </li>
                 <li>

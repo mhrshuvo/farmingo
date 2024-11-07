@@ -27,7 +27,8 @@ export default function NavbarWithSearch() {
   const { isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
-  const sidebarRef = useRef(null); // Create a ref for the sidebar
+  const sidebarRef = useRef(null);
+  const menuRef = useRef(null);
   const { searchTerm, setSearchTerm } = useSearch();
 
   const handleSearchChange = (event) => {
@@ -74,31 +75,29 @@ export default function NavbarWithSearch() {
   };
 
   const handleClickOutside = (event) => {
-    // Check if the click was outside the sidebar
+    // Close cart sidebar if clicking outside
     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-      toggleCartSidebar(); // Use toggleCartSidebar to close the sidebar
+      setIsCartSidebarOpen(false);
+    }
+    // Close user menu if clicking outside
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setIsMenuOpen(false);
     }
   };
 
-  // useEffect to handle clicks outside the menu
+  // Add event listener to detect clicks outside of the dropdowns and sidebar
   useEffect(() => {
-    if (isMenuOpen) {
-      document.addEventListener("click", handleClickOutside);
-    } else {
-      document.removeEventListener("click", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isMenuOpen]);
+  }, []);
 
   return (
     <nav className="bg-[#152721]">
-      {/* Container for the navbar */}
       <Container>
         {/* Desktop Navbar */}
         <div className="hidden md:flex lg:flex justify-between items-center px-4 py-4">
-          {/* Logo and search bar */}
           <div className="flex items-center md:gap-10 lg:gap-10 gap-2">
             <Link href={"/"} className="font-bold text-white">
               <Logo />
@@ -115,9 +114,7 @@ export default function NavbarWithSearch() {
               <FaSearch className="absolute md:right-14 hidden md:block top-2/4 transform -translate-y-2/4 text-gray-400" />
             </div>
           </div>
-          {/* User actions */}
           <div className="flex mt-5 md:mt-0 lg:mt-0 space-x-4 items-center">
-            {/* Select zone button */}
             <button
               onClick={handleZoneButtonClick}
               className="flex items-center gap-2 cursor-pointer font-bold"
@@ -127,12 +124,9 @@ export default function NavbarWithSearch() {
                 <div className="text-white mr-2">{`${selectedZone}`}</div>
               )}
             </button>
-            {/* User profile and cart */}
             <div className="flex items-center gap-5">
-              {/* User profile and logout */}
-
               {isAuthenticated ? (
-                <div className="relative inline-block text-left">
+                <div className="relative inline-block text-left" ref={menuRef}>
                   <button
                     className="text-white cursor-pointer"
                     onClick={handleMenuToggle}
@@ -181,8 +175,6 @@ export default function NavbarWithSearch() {
                   Login
                 </Button>
               )}
-
-              {/* Cart button */}
               <div className="cursor-pointer" onClick={toggleCartSidebar}>
                 <Badge content={cart.length.toString()} color="warning">
                   <CiShoppingCart className="text-white" size={30} />
@@ -197,8 +189,6 @@ export default function NavbarWithSearch() {
             <Link href={"/"} className="font-bold text-white">
               <Logo />
             </Link>
-
-            {/* User actions */}
             <div className="flex items-center gap-5">
               <button
                 onClick={handleZoneButtonClick}
@@ -209,9 +199,8 @@ export default function NavbarWithSearch() {
                   <div className="text-white mr-2">{`${selectedZone}`}</div>
                 )}
               </button>
-
               {isAuthenticated ? (
-                <div className="relative inline-block text-left">
+                <div className="relative inline-block text-left" ref={menuRef}>
                   <button
                     className="text-white cursor-pointer"
                     onClick={handleMenuToggle}
@@ -219,7 +208,7 @@ export default function NavbarWithSearch() {
                     <FaUserCircle className="h-6 w-6" />
                   </button>
                   {isMenuOpen && (
-                    <div className="menu-content absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
+                    <div className="menu-content z-20 absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
                       <div
                         className="py-1"
                         role="menu"
@@ -261,48 +250,34 @@ export default function NavbarWithSearch() {
                   Login
                 </Button>
               )}
-
               <div className="cursor-pointer" onClick={toggleCartSidebar}>
-                <Badge
-                  content={cart
-                    .reduce((total, item) => total + item.quantity, 0)
-                    .toString()}
-                  color="warning"
-                >
+                <Badge content={cart.length.toString()} color="warning">
                   <CiShoppingCart className="text-white" size={30} />
                 </Badge>
               </div>
             </div>
           </div>
-
-          {/* Search Input for Mobile */}
-          <div className="w-full mt-4 px-4">
-            <div className="relative">
-              <Input
-                className="w-full  rounded-md focus:outline-none"
-                type="search"
-                placeholder="Search your fresh vegetables..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
-              />
-              <FaSearch className="absolute md:right-14 hidden md:block top-2/4 transform -translate-y-2/4 text-gray-400" />
-            </div>
+          <div className="w-full relative mt-2">
+            <Input
+              className="w-full h-10 px-3 pr-10 rounded-md focus:outline-none"
+              type="search"
+              placeholder="Search your fresh vegetables..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
           </div>
         </div>
       </Container>
-      {/* Location Modal */}
+      {/* Modals and Sidebars */}
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={closeLocationModal}
         onZoneSelect={handleZoneSelection}
       />
-      {/* Login Modal */}
       <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
-      {/* Cart Sidebar */}
       <CartSidebar
         isOpen={isCartSidebarOpen}
-        toggle={toggleCartSidebar}
+        onClose={() => setIsCartSidebarOpen(false)}
         ref={sidebarRef}
       />
     </nav>
