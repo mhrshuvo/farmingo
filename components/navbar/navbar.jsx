@@ -258,25 +258,37 @@ export default function NavbarWithSearch() {
               </div>
             </div>
           </div>
+          {/* Search Input in Mobile */}
+          <div className="w-full mt-3">
+            <div className="relative w-full">
+              <Input
+                className="w-full h-10 px-3 pr-10 rounded-md focus:outline-none"
+                type="search"
+                placeholder="Search your fresh vegetables..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
+              />
+            </div>
+          </div>
         </div>
       </Container>
-
-      {/* Cart Sidebar */}
+      {/* Sidebar and Modals */}
       <CartSidebar
-        isOpen={isCartSidebarOpen}
-        toggle={toggleCartSidebar}
-        ref={sidebarRef}
+        isCartSidebarOpen={isCartSidebarOpen}
+        closeCartSidebar={() => setIsCartSidebarOpen(false)}
+        sidebarRef={sidebarRef}
       />
-
-      {/* Location Modal */}
       <LocationModal
         isOpen={isLocationModalOpen}
-        onClose={closeLocationModal}
-        onZoneSelect={handleZoneSelection}
+        closeModal={closeLocationModal}
+        onSelectZone={handleZoneSelection}
       />
-
-      {/* Login Modal */}
-      <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={closeLoginModal}
+        openLoginModal={openLoginModal}
+      />
     </nav>
   );
 }
