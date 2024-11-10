@@ -281,7 +281,7 @@ export default function NavbarWithSearch() {
       />
       <LocationModal
         isOpen={isLocationModalOpen}
-        closeModal={closeLocationModal}
+        onClose={closeLocationModal}
         onSelectZone={handleZoneSelection}
       />
       <LoginModal

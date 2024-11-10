@@ -5,7 +5,7 @@ import { MdClose } from "react-icons/md";
 import axios from "axios";
 import { ROUTES } from "@/routes/routes";
 
-export default function LocationModal({ isOpen, onClose, onZoneSelect }) {
+export default function LocationModal({ isOpen, onClose, onSelectZone }) {
   const [zones, setZones] = useState([]);
 
   useEffect(() => {
@@ -26,8 +26,10 @@ export default function LocationModal({ isOpen, onClose, onZoneSelect }) {
   }, [isOpen]);
 
   const handleZoneSelection = (zone) => {
-    if (typeof onZoneSelect === "function") {
-      onZoneSelect(zone.name);
+    console.log(zone);
+
+    if (typeof onSelectZone === "function") {
+      onSelectZone(zone.name);
     } else {
       console.error("onZoneSelect is not a function");
     }
