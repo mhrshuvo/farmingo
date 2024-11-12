@@ -296,28 +296,37 @@ const CheckoutPage = () => {
               Cart Summary
             </h2>
             <ul className="mb-4">
-              {cart.map((item) => (
-                <div
-                  key={item.id}
-                  className="border rounded-md shadow-md p-4 flex items-center justify-between bg-white"
-                >
-                  <div className="flex items-center">
-                    <img
-                      src={`${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`}
-                      alt={item.name}
-                      className="w-16 h-16 mr-4 rounded-md"
-                    />
-                    <div>
-                      <p className="text-gray-800 font-semibold">{item.name}</p>
-                      <p className="text-gray-600">৳{item.price} each</p>
-                      <p className="text-gray-600">
-                        Total: {item.quantity} <br />
-                        Price = ৳{item.quantity * item.price}
-                      </p>
+              {cart.map((item) => {
+                const [unitAmount, unitType] = item.unit.split(" ");
+                const totalAmount = item.quantity * parseInt(unitAmount);
+
+                return (
+                  <div
+                    key={item.id}
+                    className="border rounded-md shadow-md p-4 flex items-center justify-between bg-white"
+                  >
+                    <div className="flex items-center">
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`}
+                        alt={item.name}
+                        className="w-16 h-16 mr-4 rounded-md"
+                      />
+                      <div>
+                        <p className="text-gray-800 font-semibold">
+                          {item.name}
+                        </p>
+                        <p className="text-gray-600">৳{item.price} each</p>
+                        <p className="text-gray-600">
+                          Total: {totalAmount}
+                          {unitType}
+                          <br />
+                          Price = ৳{item.quantity * item.price}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </ul>
 
             {/* Show Delivery Charge */}

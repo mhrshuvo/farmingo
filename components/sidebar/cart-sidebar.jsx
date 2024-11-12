@@ -90,52 +90,62 @@ const CartSidebar = forwardRef(({ isOpen, toggle }, ref) => {
         ) : (
           <div>
             <ul>
-              {cart.map((item) => (
-                <li
-                  key={item.id}
-                  className="flex items-center justify-between mb-4"
-                >
-                  <div className="flex items-center">
-                    <img
-                      src={
-                        item.image
-                          ? `${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`
-                          : "/placeholder-image.jpg"
-                      }
-                      alt={item.name}
-                      className="w-12 h-12 mr-4 rounded-md"
-                    />
-                    <div>
-                      <p className="text-gray-800">{item.name}</p>
-                      <p className="text-gray-600">৳{item.price}</p>
+              {cart.map((item) => {
+                const [unitAmount, unitType] = item.unit.split(" ");
+                const totalAmount = item.quantity * parseInt(unitAmount);
+
+                return (
+                  <li
+                    key={item.id}
+                    className="flex items-center justify-between mb-4"
+                  >
+                    <div className="flex items-center">
+                      <img
+                        src={
+                          item.image
+                            ? `${process.env.NEXT_PUBLIC_IMG_URL}${item.image}`
+                            : "/placeholder-image.jpg"
+                        }
+                        alt={item.name}
+                        className="w-12 h-12 mr-4 rounded-md"
+                      />
+                      <div>
+                        <p className="text-gray-800">{item.name}</p>
+                        <p className="text-gray-600">৳{item.price} each</p>
+                        <p className="text-gray-600">
+                          Total: {totalAmount}
+                          {unitType}
+                        </p>
+                        Price: ৳{item.quantity * item.price}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center">
-                    <button
-                      aria-label="Decrease quantity"
-                      className="text-gray-600 focus:outline-none"
-                      onClick={() => handleRemoveQuantity(item)}
-                    >
-                      <IoMdRemove className="w-6 h-6" />
-                    </button>
-                    <span className="mx-2">{item.quantity}</span>
-                    <button
-                      aria-label="Increase quantity"
-                      className="text-gray-600 focus:outline-none"
-                      onClick={() => handleAddQuantity(item)}
-                    >
-                      <IoMdAdd className="w-6 h-6" />
-                    </button>
-                    <button
-                      aria-label="Remove item"
-                      className="text-gray-600 focus:outline-none ml-4"
-                      onClick={() => handleDeleteItem(item)}
-                    >
-                      <AiOutlineDelete className="w-6 h-6" />
-                    </button>
-                  </div>
-                </li>
-              ))}
+                    <div className="flex items-center">
+                      <button
+                        aria-label="Decrease quantity"
+                        className="text-gray-600 focus:outline-none"
+                        onClick={() => handleRemoveQuantity(item)}
+                      >
+                        <IoMdRemove className="w-6 h-6" />
+                      </button>
+                      <span className="mx-2">{item.quantity}</span>
+                      <button
+                        aria-label="Increase quantity"
+                        className="text-gray-600 focus:outline-none"
+                        onClick={() => handleAddQuantity(item)}
+                      >
+                        <IoMdAdd className="w-6 h-6" />
+                      </button>
+                      <button
+                        aria-label="Remove item"
+                        className="text-gray-600 focus:outline-none ml-4"
+                        onClick={() => handleDeleteItem(item)}
+                      >
+                        <AiOutlineDelete className="w-6 h-6" />
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
 
             <button
