@@ -9,8 +9,9 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 // Use forwardRef to forward the ref to the div element
-const CartSidebar = forwardRef(({ isOpen, toggle }, ref) => {
+const CartSidebar = forwardRef(({ isOpen, toggle }) => {
   const closeButtonRef = useRef(null); // Ref for the close button
+  const sidebarRef = useRef(null); // Ref for the sidebar itself
   const { cart, removeItemFromCart, decreaseQuantity, addItemToCart } =
     useCart();
   const router = useRouter();
@@ -18,26 +19,29 @@ const CartSidebar = forwardRef(({ isOpen, toggle }, ref) => {
   // Close sidebar when clicked outside
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      // Check if click is outside the sidebar and close button
+      // Ensure sidebarRef and closeButtonRef are not null before proceeding
       if (
-        ref.current &&
-        !ref.current.contains(event.target) &&
-        !closeButtonRef.current.contains(event.target)
+        sidebarRef.current &&
+        closeButtonRef.current &&
+        !sidebarRef.current.contains(event.target) && // If the click is outside the sidebar
+        !closeButtonRef.current.contains(event.target) // And outside the close button
       ) {
-        toggle();
+        toggle(); // Close the sidebar
       }
     };
 
+    // Only add event listener if the sidebar is open
     if (isOpen) {
       document.addEventListener("mousedown", handleOutsideClick);
     } else {
       document.removeEventListener("mousedown", handleOutsideClick);
     }
 
+    // Cleanup event listener when component unmounts or sidebar state changes
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [isOpen, toggle, ref]);
+  }, [isOpen, toggle]); // Dependencies: rerun effect if isOpen or toggle changes
 
   // Add quantity of an item
   const handleAddQuantity = (item) => {
@@ -69,7 +73,7 @@ const CartSidebar = forwardRef(({ isOpen, toggle }, ref) => {
 
   return (
     <div
-      ref={ref}
+      ref={sidebarRef} // Attach the sidebar ref
       className={`fixed inset-y-0 right-0 z-50 w-full md:w-80 bg-gray-300 shadow-lg overflow-y-auto transition-transform duration-300 ease-in-out transform ${
         isOpen ? "translate-x-0" : "translate-x-full"
       }`}

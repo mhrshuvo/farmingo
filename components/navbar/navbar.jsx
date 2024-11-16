@@ -30,6 +30,8 @@ export default function NavbarWithSearch() {
   const menuRef = useRef(null);
   const { searchTerm, setSearchTerm } = useSearch();
 
+  const [isMobileView, setIsMobileView] = useState(false);
+
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -75,17 +77,41 @@ export default function NavbarWithSearch() {
     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
       setIsCartSidebarOpen(false);
     }
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
+    // Close the menu if clicked outside, but only for mobile view
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target) &&
+      isMobileView
+    ) {
       setIsMenuOpen(false);
     }
   };
 
+  // Check for mobile view (you can customize this breakpoint)
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 1024); // Define your breakpoint (1024px here)
+    };
+
+    handleResize(); // Initialize view on mount
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // Add the click outside listener only if it's a mobile view
+  useEffect(() => {
+    if (isMobileView) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      // Remove the event listener for desktop
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isMobileView]);
 
   return (
     <nav className="bg-[#152721]">
@@ -179,72 +205,60 @@ export default function NavbarWithSearch() {
         </div>
 
         <div className="flex md:hidden flex-col justify-between items-center px-4 py-4">
-          {" "}
           <div className="w-full flex justify-between items-center">
-            {" "}
             <Link href={"/"} className="font-bold text-white">
-              {" "}
-              <Logo />{" "}
-            </Link>{" "}
+              <Logo />
+            </Link>
             <div className="flex items-center gap-5">
-              {" "}
               <button
                 onClick={handleZoneButtonClick}
                 className="flex items-center gap-2 cursor-pointer font-bold"
               >
-                {" "}
-                <FaMapMarkerAlt className="text-white cursor-pointer" />{" "}
+                <FaMapMarkerAlt className="text-white cursor-pointer" />
                 {selectedZone && (
                   <div className="text-white mr-2">{`${selectedZone}`}</div>
-                )}{" "}
-              </button>{" "}
+                )}
+              </button>
               {isAuthenticated ? (
                 <div className="relative inline-block text-left" ref={menuRef}>
-                  {" "}
                   <button
                     className="text-white cursor-pointer"
                     onClick={handleMenuToggle}
                   >
-                    {" "}
-                    <FaUserCircle className="h-6 w-6" />{" "}
-                  </button>{" "}
+                    <FaUserCircle className="h-6 w-6" />
+                  </button>
                   {isMenuOpen && (
                     <div className="menu-content z-20 absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 sm:mx-auto">
-                      {" "}
                       <div
                         className="py-1"
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="options-menu"
                       >
-                        {" "}
                         <Link
                           href="/account"
                           className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                          {" "}
-                          Profile{" "}
-                        </Link>{" "}
+                          Profile
+                        </Link>
                         <Link
                           href="/orders"
                           className="block px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                          {" "}
-                          Orders{" "}
-                        </Link>{" "}
+                          Orders
+                        </Link>
                         <button
                           className="w-full text-left px-4 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                           onClick={handleLogout}
                         >
-                          {" "}
-                          Logout{" "}
-                        </button>{" "}
-                      </div>{" "}
+                          Logout
+                        </button>
+                      </div>
                     </div>
-                  )}{" "}
+                  )}
                 </div>
               ) : (
                 <Button
@@ -253,24 +267,19 @@ export default function NavbarWithSearch() {
                   className="text-white font-bold"
                   onClick={openLoginModal}
                 >
-                  {" "}
-                  Login{" "}
+                  Login
                 </Button>
-              )}{" "}
+              )}
               <div className="cursor-pointer" onClick={toggleCartSidebar}>
-                {" "}
                 <Badge content={cart.length.toString()} color="warning">
-                  {" "}
-                  <CiShoppingCart className="text-white" size={30} />{" "}
-                </Badge>{" "}
-              </div>{" "}
-            </div>{" "}
-          </div>{" "}
-          {/* Search Input in Mobile */}{" "}
+                  <CiShoppingCart className="text-white" size={30} />
+                </Badge>
+              </div>
+            </div>
+          </div>
+          {/* Search Input in Mobile */}
           <div className="w-full mt-3">
-            {" "}
             <div className="relative w-full">
-              {" "}
               <Input
                 className="w-full h-10 px-3 pr-10 rounded-md focus:outline-none"
                 type="search"
@@ -278,15 +287,14 @@ export default function NavbarWithSearch() {
                 value={searchTerm}
                 onChange={handleSearchChange}
                 style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
-              />{" "}
-            </div>{" "}
-          </div>{" "}
+              />
+            </div>
+          </div>
         </div>
       </Container>
 
       {/* Sidebar and Modals */}
       <CartSidebar isOpen={isCartSidebarOpen} toggle={toggleCartSidebar} />
-
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={closeLocationModal}

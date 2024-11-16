@@ -7,6 +7,7 @@ import { ROUTES } from "@/routes/routes";
 
 export default function LocationModal({ isOpen, onClose, onSelectZone }) {
   const [zones, setZones] = useState([]);
+  const [isZoneSelected, setIsZoneSelected] = useState(false);
 
   useEffect(() => {
     const fetchZones = async () => {
@@ -22,6 +23,7 @@ export default function LocationModal({ isOpen, onClose, onSelectZone }) {
 
     if (isOpen) {
       fetchZones();
+      setIsZoneSelected(false); // Reset the selected state when modal is opened
     }
   }, [isOpen]);
 
@@ -30,10 +32,10 @@ export default function LocationModal({ isOpen, onClose, onSelectZone }) {
 
     if (typeof onSelectZone === "function") {
       onSelectZone(zone.name);
+      setIsZoneSelected(true); // Mark zone as selected
     } else {
-      console.error("onZoneSelect is not a function");
+      console.error("onSelectZone is not a function");
     }
-    onClose();
   };
 
   return (
@@ -44,12 +46,6 @@ export default function LocationModal({ isOpen, onClose, onSelectZone }) {
     >
       <div className="flex items-center justify-center min-h-screen">
         <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl w-full max-w-md relative">
-          <button
-            className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700"
-            onClick={onClose}
-          >
-            <MdClose size={24} />
-          </button>
           <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <h2 className="text-lg font-bold mb-4">Select a Zone</h2>
             <div className="overflow-y-auto max-h-60">
