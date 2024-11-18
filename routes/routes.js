@@ -10,4 +10,6 @@ export const ROUTES = {
   UPDATE_PROFILE: "/profile_update",
   MY_ORDERS: "/consumer/my_orders",
   MY_ADDRESS: "/consumer/my_address_book",
+  RESET_REQUEST: "/password/reset-request",
+  RESET_PASSWORD: "/password/reset",
 };

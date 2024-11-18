@@ -16,10 +16,11 @@ import { useAuth } from "@/contexts/auth/auth-context";
 import { ROUTES } from "@/routes/routes";
 
 export default function LoginModal({ isOpen, onClose }) {
-  // AUTH CONTEXT
   const { login, signUp } = useAuth();
 
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false); // For toggling between Sign Up and Sign In
+  const [isForgotPassword, setIsForgotPassword] = useState(false); // For toggling Forgot Password mode
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -47,9 +48,47 @@ export default function LoginModal({ isOpen, onClose }) {
     });
   };
 
+  // Handle the forgot password click
+  const handleForgotPasswordClick = () => {
+    setIsForgotPassword(true); // Switch to forgot password form
+    setIsSignUp(false); // Make sure we're not in Sign Up mode
+  };
+
+  // Reset password logic
+  const handleResetPassword = async () => {
+    if (!formData.emailOrPhone) {
+      toast.error("Please enter your email");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.RESET_REQUEST}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ email: formData.emailOrPhone }),
+        }
+      );
+
+      if (response.ok) {
+        toast.success("Password reset link sent to your phone");
+        onClose();
+      } else {
+        toast.error("Failed to send password reset link");
+      }
+    } catch (error) {
+      toast.error(`Error: ${error.message}`);
+    }
+  };
+
+  // Validate the form before submitting
   const validateForm = () => {
     const errors = {};
-    const passwordRegex = /.{6,}/; // Regex for at least 8 characters
+    const passwordRegex = /.{6,}/; // Regex for at least 6 characters
     const phoneRegex = /^[0-9]{1,11}$/; // Regex for up to 11 digits
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for valid email
 
@@ -62,7 +101,7 @@ export default function LoginModal({ isOpen, onClose }) {
         errors.phone = "Phone number must be up to 11 digits";
       }
       if (!formData.password || !passwordRegex.test(formData.password)) {
-        errors.password = "Password must be at least 8 characters long";
+        errors.password = "Password must be at least 6 characters long";
       }
       if (!formData.address) errors.address = "Address is required";
     }
@@ -71,7 +110,13 @@ export default function LoginModal({ isOpen, onClose }) {
     return isSignUp ? Object.keys(errors).length === 0 : true;
   };
 
+  // Handle the form submission (Sign Up, Sign In, or Reset Password)
   const handleFormSubmit = async () => {
+    if (isForgotPassword) {
+      handleResetPassword(); // Reset password logic
+      return;
+    }
+
     if (!validateForm()) {
       if (isSignUp) {
         Object.values(formErrors).forEach((error) => {
@@ -83,7 +128,7 @@ export default function LoginModal({ isOpen, onClose }) {
 
     try {
       if (isSignUp) {
-        // Signup logic here
+        // Sign Up logic here
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.ZONES}`
         );
@@ -91,7 +136,6 @@ export default function LoginModal({ isOpen, onClose }) {
           throw new Error("Failed to fetch zones");
         }
         const zonesData = await response.json();
-
         const selectedZone = localStorage.getItem("selectedZone");
         const zone = zonesData.find((zone) => zone.name === selectedZone);
         if (!zone) {
@@ -193,19 +237,54 @@ export default function LoginModal({ isOpen, onClose }) {
     }
   };
 
+  // Toggle between Sign Up and Sign In modes
   const handleToggleMode = () => {
     setIsSignUp(!isSignUp);
+    setIsForgotPassword(false); // Reset forgot password view when toggling
+  };
+
+  // Handle back to Sign In from Forgot Password
+  const handleBackToSignIn = () => {
+    setIsForgotPassword(false); // Go back to Sign In form
+    setIsSignUp(false); // Ensure we're in Sign In mode, not Sign Up
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader className="flex flex-col gap-1">
-              {isSignUp ? "Sign Up" : "Sign In"}
-            </ModalHeader>
-            <ModalBody>
+        <ModalHeader className="flex flex-col gap-1">
+          {isForgotPassword
+            ? "Reset Password"
+            : isSignUp
+            ? "Sign Up"
+            : "Sign In"}
+        </ModalHeader>
+        <ModalBody>
+          {isForgotPassword ? (
+            <>
+              <Input
+                label="Email"
+                name="emailOrPhone"
+                value={formData.emailOrPhone}
+                onChange={handleInputChange}
+                variant="bordered"
+                helperText={formErrors.emailOrPhone}
+                helperColor={formErrors.emailOrPhone ? "error" : "default"}
+              />
+              <div className="flex py-2 px-1 justify-between items-center">
+                <div className="flex justify-center">
+                  <Link
+                    className="text-[#145D4C] cursor-pointer"
+                    size="sm"
+                    onClick={handleBackToSignIn}
+                  >
+                    Back to Sign In
+                  </Link>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
               {isSignUp && (
                 <>
                   <Input
@@ -280,19 +359,34 @@ export default function LoginModal({ isOpen, onClose }) {
                       : "Don't have an account? Sign Up"}
                   </Link>
                 </div>
+
+                <div className="flex justify-center">
+                  <Link
+                    href="#"
+                    className="text-[#145D4C] cursor-pointer"
+                    size="sm"
+                    onClick={handleForgotPasswordClick}
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
               </div>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                className="text-white bg-[#145D4C]"
-                fullWidth
-                onPress={handleFormSubmit}
-              >
-                {isSignUp ? "Sign Up" : "Sign In"}
-              </Button>
-            </ModalFooter>
-          </>
-        )}
+            </>
+          )}
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            className="text-white bg-[#145D4C]"
+            fullWidth
+            onPress={handleFormSubmit}
+          >
+            {isForgotPassword
+              ? "Send Reset Link"
+              : isSignUp
+              ? "Sign Up"
+              : "Sign In"}
+          </Button>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );
