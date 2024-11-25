@@ -16,6 +16,9 @@ const CartSidebar = forwardRef(({ isOpen, toggle }) => {
     useCart();
   const router = useRouter();
 
+  // Delivery charge (if applicable)
+  const deliveryCharge = 50;
+
   // Close sidebar when clicked outside
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -69,6 +72,15 @@ const CartSidebar = forwardRef(({ isOpen, toggle }) => {
   const handleProceedToPayment = () => {
     toggle(); // Close the sidebar
     router.push("/checkout"); // Navigate to checkout
+  };
+
+  // Calculate the total price of all items in the cart
+  const calculateCartTotal = () => {
+    const itemsTotal = cart.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+    return itemsTotal + deliveryCharge;
   };
 
   return (
@@ -152,6 +164,14 @@ const CartSidebar = forwardRef(({ isOpen, toggle }) => {
               })}
             </ul>
 
+            {/* Display Cart Total */}
+            <div className="mt-4 flex justify-between items-center">
+              <p className="font-semibold text-gray-800">
+                Total: ৳{calculateCartTotal()} (Delivery charge included)
+              </p>
+            </div>
+
+            {/* Proceed to payment button */}
             <button
               onClick={handleProceedToPayment}
               className="bg-green-600 text-white px-4 py-2 rounded-md mt-4 w-full"

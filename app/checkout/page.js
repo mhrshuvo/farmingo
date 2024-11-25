@@ -337,10 +337,9 @@ const CheckoutPage = () => {
             <h3 className="text-xl font-semibold">
               Total: ৳
               {cart.reduce(
-                (total, item) =>
-                  total + deliveryCharge + item.price * item.quantity,
+                (total, item) => total + item.price * item.quantity,
                 0
-              )}
+              ) + deliveryCharge}
             </h3>
           </div>
         </div>

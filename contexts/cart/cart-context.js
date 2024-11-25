@@ -27,7 +27,7 @@ const cartReducer = (state, action) => {
             ? { ...item, quantity: item.quantity - 1 }
             : item
         )
-        .filter((item) => item.quantity > 0);
+        .filter((item) => item.quantity > 0); // Filter out items with 0 quantity
     case "CLEAR_CART":
       return [];
     default:
@@ -42,7 +42,7 @@ export const CartProvider = ({ children }) => {
     setCart((prevCart) => cartReducer(prevCart, action));
   };
 
-  // Define cart context functions
+  // Cart functions
   const addItemToCart = (item) => {
     dispatch({ type: "ADD_ITEM", payload: item });
   };
@@ -52,7 +52,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const decreaseQuantity = (itemId) => {
-    dispatch({ type: "DECREASE_QUANTITY", payload: itemId });
+    dispatch({ type: "DECREASE_QUANTITY", payload: { id: itemId } });
   };
 
   const clearCart = () => {
@@ -65,14 +65,13 @@ export const CartProvider = ({ children }) => {
     return item ? item.quantity : 0;
   };
 
-  // Provide cart context values
   const contextValues = {
     cart,
     addItemToCart,
     removeItemFromCart,
     decreaseQuantity,
     clearCart,
-    getItemQuantity, // Include the new function
+    getItemQuantity,
   };
 
   return (

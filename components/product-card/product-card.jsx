@@ -1,41 +1,31 @@
 "use client";
 
-import { useState } from "react";
 import { useCart } from "@/contexts/cart/cart-context";
 import React from "react";
 import toast from "react-hot-toast";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
-  const { name, price, image, unit, type } = product;
+  const { name, price, image, unit, type, id } = product;
   const { addItemToCart, decreaseQuantity, getItemQuantity } = useCart();
 
-  const initialQuantity = getItemQuantity(product.id) || 0;
-  const [quantity, setQuantity] = useState(initialQuantity);
+  // Get the quantity of the product from the cart context
+  const quantity = getItemQuantity(id);
 
   const handleAddToCart = () => {
     addItemToCart(product);
-    setQuantity(1); // Set initial quantity
     toast.success("Added to Cart");
   };
 
   const handleIncreaseQuantity = () => {
-    if (quantity === 0) {
-      handleAddToCart();
-    } else {
-      addItemToCart(product); // Use addItemToCart to increase quantity
-      setQuantity(quantity + 1);
-    }
+    addItemToCart(product); // Just add one more item to the cart
   };
 
   const handleDecreaseQuantity = () => {
     if (quantity > 1) {
-      decreaseQuantity(product.id); // Decrease the quantity in cart
-      setQuantity(quantity - 1);
-    } else {
-      // If quantity is 1, reset to 0 and remove the item from cart
-      decreaseQuantity(product.id);
-      setQuantity(0);
+      decreaseQuantity(id); // Decrease the quantity by 1
+    } else if (quantity === 1) {
+      decreaseQuantity(id); // Decrease the quantity to 0
       toast.success("Removed from Cart");
     }
   };
