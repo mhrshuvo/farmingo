@@ -263,7 +263,7 @@ export default function LoginModal({ isOpen, onClose }) {
           {isForgotPassword ? (
             <>
               <Input
-                label="Email"
+                label="Phone"
                 name="emailOrPhone"
                 value={formData.emailOrPhone}
                 onChange={handleInputChange}
