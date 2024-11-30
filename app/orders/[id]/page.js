@@ -15,6 +15,8 @@ const OrderDetailsPage = () => {
   const authToken = getAuthToken();
   const orderDetailsRef = useRef();
 
+  console.log(order);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const OrderDetailsPage = () => {
       .from(element)
       .save()
       .then(() => {
-        setPrinting(false); 
+        setPrinting(false);
       });
   };
 
@@ -91,7 +93,7 @@ const OrderDetailsPage = () => {
             <strong>Delivery Address:</strong> {order.delivery_address}
           </p>
           <p>
-            <strong>Amount:</strong> {order.total_amount} ৳
+            <strong>Total Amount:</strong> {order.total_amount} ৳
           </p>
           <p>
             <strong>Status:</strong> {order.status}
@@ -117,9 +119,12 @@ const OrderDetailsPage = () => {
                   <th className="px-2 py-2 border-b border-gray-200 text-center">
                     Quantity
                   </th>
+                  <th className="px-2 py-2 border-b border-gray-200 text-center">
+                    Amount
+                  </th>
 
                   <th className="px-2 py-2 border-b border-gray-200 text-center">
-                    Total Amount
+                    Price
                   </th>
                 </tr>
               </thead>
@@ -139,7 +144,10 @@ const OrderDetailsPage = () => {
                       {product.product_name}
                     </td>
                     <td className="px-2 py-2 border-b border-gray-200 text-center">
-                      {product.quantity} {product.unit}
+                      {product.quantity}
+                    </td>
+                    <td className="px-2 py-2 border-b border-gray-200 text-center">
+                      {product.unit}
                     </td>
 
                     <td className="px-2 py-2 border-b border-gray-200 text-center">

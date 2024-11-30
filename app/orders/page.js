@@ -35,7 +35,7 @@ const OrderTable = () => {
 
   return (
     <>
-      <div className="container mx-auto h-screen p-4">
+      <div className="container mx-auto  p-4">
         <div>
           <h1 className="text-3xl font-semibold text-center my-5">My Orders</h1>
         </div>
@@ -52,7 +52,7 @@ const OrderTable = () => {
                     Order ID
                   </th>
                   <th className="px-4 py-2 bg-[#223d34] border-b border-r text-center">
-                    Amount
+                    Price
                   </th>
                   <th className="px-4 py-2 bg-[#223d34] border-b border-r text-center">
                     Status
@@ -87,8 +87,6 @@ const OrderTable = () => {
           )}
         </div>
       </div>
-
-      <Footer />
     </>
   );
 };
