@@ -1,16 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "@/components/product-card/product-card";
 import Container from "@/app/container";
 import { ROUTES } from "@/routes/routes";
 import CategoriesNavbar from "@/components/categories/categories";
 import Footer from "@/components/footer/footer";
+import { useSearch } from "@/contexts/search/search-context";
 
 function CategoryPage({ params }) {
   const { id } = params;
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
+  const { searchTerm } = useSearch();
 
   useEffect(() => {
     // Accessing location only on the client side
@@ -20,10 +22,12 @@ function CategoryPage({ params }) {
 
     const fetchData = async () => {
       try {
-        // Fetch data from the API
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.CATEGORY_PRODUCTS}/${id}`
-        );
+        const apiUrl = searchTerm
+          ? `https://backend.farmingo.xyz/api/v1/search?name=${searchTerm}` // Search API
+          : `${process.env.NEXT_PUBLIC_BASE_URL}${ROUTES.CATEGORY_PRODUCTS}/${id}`; // Category API
+
+        // Fetch data from the appropriate API
+        const response = await fetch(apiUrl);
         const data = await response.json();
 
         // Update state with products
@@ -34,7 +38,7 @@ function CategoryPage({ params }) {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, searchTerm]); // Re-fetch when id or searchTerm changes
 
   return (
     <main>
@@ -46,10 +50,7 @@ function CategoryPage({ params }) {
       <Container>
         <div>
           <section className="min-h-screen">
-            <div className="flex pt-10 justify-between items-center mx-2">
-              <h2 className="text-3xl font-semibold mb-4">{name}</h2>
-            </div>
-            <div className="pb-20">
+            <div className="py-10">
               {products.length === 0 ? (
                 <p className="text-center text-lg text-gray-600">
                   No products available in this category.
