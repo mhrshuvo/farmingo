@@ -64,7 +64,7 @@ const CartSidebar = forwardRef(({ isOpen, toggle }) => {
 
   // Delete an item from the cart
   const handleDeleteItem = (item) => {
-    removeItemFromCart(item);
+    removeItemFromCart(item?.id);
     toast.error("Removed From Cart");
   };
 
