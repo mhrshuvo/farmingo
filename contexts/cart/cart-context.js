@@ -18,20 +18,28 @@ const cartReducer = (state, action) => {
       } else {
         return [...state, { ...action.payload, quantity: 1 }];
       }
+
     case "REMOVE_ITEM":
-      return state.filter((item) => item.id !== action.payload.id);
-    case "DECREASE_QUANTITY":
-      return state
-        .map((item) =>
-          item.id === action.payload.id
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-        .filter((item) => item.quantity > 0); // Filter out items with 0 quantity
+      return state.filter((item) => item.id !== action.payload);
+
+    case "DECREASE_QUANTITY": {
+      return state.reduce((result, item) => {
+        if (item.id === action.payload.id) {
+          if (item.quantity > 1) {
+            return [...result, { ...item, quantity: item.quantity - 1 }];
+          }
+          // Automatically remove item if quantity reaches 0
+          return result;
+        }
+        return [...result, item];
+      }, []);
+    }
+
     case "CLEAR_CART":
       return [];
+
     default:
-      return state;
+      throw new Error(`Unknown action type: ${action.type}`);
   }
 };
 

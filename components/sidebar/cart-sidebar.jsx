@@ -54,11 +54,11 @@ const CartSidebar = forwardRef(({ isOpen, toggle }) => {
 
   // Remove quantity of an item
   const handleRemoveQuantity = (item) => {
-    if (item.quantity === 1) {
-      removeItemFromCart(item);
-    } else {
-      const updatedItem = { ...item, quantity: item.quantity - 1 };
-      decreaseQuantity(updatedItem);
+    if (item?.quantity > 1) {
+      decreaseQuantity(item.id); // Decrease the quantity by 1
+    } else if (item?.quantity === 1) {
+      removeItemFromCart(item.id); // Remove the item completely
+      toast.success("Removed from Cart");
     }
   };
 
