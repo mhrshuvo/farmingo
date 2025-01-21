@@ -16,6 +16,18 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center gap-5 md:gap-20 lg:gap-20">
+          <div>
+              <h2 className="mb-6 text-sm font-semibold uppercase text-white">
+                About Us
+              </h2>
+              <ul className="text-gray-200 font-medium">
+                <li className="mb-4">
+                  <Link href="/terms-and-conditions" className="hover:underline">
+                    Terms  & Conditions
+                  </Link>
+                </li>
+              </ul>
+            </div>
             <div>
               <h2 className="mb-6 text-sm font-semibold uppercase text-white">
                 Earn with us
@@ -28,7 +40,7 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-
+            
             <div>
               <h2 className="mb-6 text-sm font-semibold uppercase text-white">
                 Quick Contact
@@ -44,6 +56,7 @@ const Footer = () => {
                     +8801810098991{" "}
                   </a>
                 </li>
+                
               </ul>
             </div>
           </div>
